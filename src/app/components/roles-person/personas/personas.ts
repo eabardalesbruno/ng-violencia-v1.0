@@ -32,10 +32,10 @@ export class Personas implements OnInit {
   persona?: PersonaResponse;
   modalRef?: BsModalRef;
 
-  // Paginación y ordenamiento
-  totalRows = 30; // Para pruebas, luego será actualizado por el backend
+  
+  totalRows = 0; 
   pageNumber = 0;
-  pageSize = 15;
+  pageSize = 5;
   sortBy = 'nombres';
   sortDir = 'asc';
 

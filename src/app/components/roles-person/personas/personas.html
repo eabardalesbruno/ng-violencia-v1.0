@@ -1,30 +1,40 @@
 <main class="app-main">
-  <br>
+  <br />
   <div class="app-content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Personas Identificadas en los Casos de Delitos</h3>
+              <h3 class="card-title">
+                Personas Identificadas en los Casos de Delitos
+              </h3>
             </div>
             <div class="card-body">
-            <div class="input-group mb-3">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Ingrese el valor de Nombres a buscar"
-    [(ngModel)]="nombresFilter"
-    (keyup.enter)="onFilter()">
-  <button class="btn btn-outline-primary" type="button" (click)="onFilter()">
-    <i class="bi bi-search"></i> Buscar
-  </button>
-  <button class="btn btn-success ms-2" [routerLink]="['/personas/register']">
-    <i class="bi bi-plus-lg"></i> Agregar Persona
-  </button>
-</div>
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Ingrese el valor de Nombres a buscar"
+                  [(ngModel)]="nombresFilter"
+                  (keyup.enter)="onFilter()"
+                />
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  (click)="onFilter()"
+                >
+                  <i class="bi bi-search"></i> Buscar
+                </button>
+                <button
+                  class="btn btn-success ms-2"
+                  [routerLink]="['/personas/register']"
+                >
+                  <i class="bi bi-plus-lg"></i> Agregar Persona
+                </button>
+              </div>
               <ngx-datatable
-              #table
+                #table
                 class="material"
                 [columnMode]="'force'"
                 [headerHeight]="50"
@@ -37,10 +47,18 @@
                 [rows]="personas"
                 (page)="onPageChange($event)"
                 (sort)="onSortChange($event)"
-                [externalPaging]="true">
-
-                <ngx-datatable-column name="#" [width]="50" [headerClass]="'text-center'" [cellClass]="'text-center'">
-                  <ng-template let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                [externalPaging]="true"
+              >
+                <ngx-datatable-column
+                  name="#"
+                  [width]="50"
+                  [headerClass]="'text-center'"
+                  [cellClass]="'text-center'"
+                >
+                  <ng-template
+                    let-rowIndex="rowIndex"
+                    ngx-datatable-cell-template
+                  >
                     {{ rowIndex + 1 + (pageNumber * pageSize) }}
                   </ng-template>
                 </ngx-datatable-column>
@@ -54,17 +72,26 @@
                     {{ value }}
                   </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="TIPO DOCUMENTO" prop="tipoDocumento">
+                <ngx-datatable-column
+                  name="TIPO DOCUMENTO"
+                  prop="tipoDocumento"
+                >
                   <ng-template let-value="value" ngx-datatable-cell-template>
                     {{ value }}
                   </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="NUMERO DOCUMENTO" prop="numeroDocumento">
+                <ngx-datatable-column
+                  name="NUMERO DOCUMENTO"
+                  prop="numeroDocumento"
+                >
                   <ng-template let-value="value" ngx-datatable-cell-template>
                     {{ value }}
                   </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="FECHA NACIMIENTO" prop="fechaNacimiento">
+                <ngx-datatable-column
+                  name="FECHA NACIMIENTO"
+                  prop="fechaNacimiento"
+                >
                   <ng-template let-value="value" ngx-datatable-cell-template>
                     {{ value | date:'dd-MM-yyyy' }}
                   </ng-template>
@@ -74,20 +101,32 @@
                     {{ value }}
                   </ng-template>
                 </ngx-datatable-column>
-                <ngx-datatable-column name="ACCIONES" [sortable]="false" [canAutoResize]="false" [width]="150">
+                <ngx-datatable-column
+                  name="ACCIONES"
+                  [sortable]="false"
+                  [canAutoResize]="false"
+                  [width]="150"
+                >
                   <ng-template let-row="row" ngx-datatable-cell-template>
-                    <button class="btn btn-warning btn-sm mx-1" [routerLink]="['/personas/edit', row.id]">
+                    <button
+                      class="btn btn-warning btn-sm mx-1"
+                      [routerLink]="['/personas/edit', row.id]"
+                    >
                       <i class="bi bi-pencil-square"></i>
                     </button>
-                    <button type="button" class="btn btn-danger btn-sm mx-1" (click)="deletePersona(deletePersonaModal, row)">
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm mx-1"
+                      (click)="deletePersona(deletePersonaModal, row)"
+                    >
                       <i class="bi bi-trash3-fill"></i>
                     </button>
                   </ng-template>
                 </ngx-datatable-column>
               </ngx-datatable>
               <div class="mt-2 text-end text-secondary small">
-  Total registros: <b>{{ totalRows }}</b>
-</div>
+                Total registros: <b>{{ totalRows }}</b>
+              </div>
             </div>
             <div class="card-footer"></div>
           </div>
@@ -99,14 +138,20 @@
 
 <ng-template #deletePersonaModal>
   <div class="modal-body">
-    <p>¿Estás seguro de que deseas eliminar esta Persona "{{persona?.nombres}} {{persona?.apellidos}}"?</p>
+    <p>
+      ¿Estás seguro de que deseas eliminar esta Persona "{{persona?.nombres}}
+      {{persona?.apellidos}}"?
+    </p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
-    <button type="button" class="btn btn-danger" (click)="confirmDelete()">Eliminar</button>
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+      Eliminar
+    </button>
   </div>
 </ng-template>
-
 
 <!-- Tabla de Personas sin data table
 
