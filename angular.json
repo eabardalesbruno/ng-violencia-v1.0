@@ -3,9 +3,13 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-violencia-v1": {
+    "ng-orders-management-v1": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -14,7 +18,11 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -22,13 +30,9 @@
               }
             ],
             "styles": [
-              "src/styles.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+              "node_modules/ngx-toastr/toastr.css",
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
@@ -58,10 +62,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-violencia-v1:build:production"
+              "buildTarget": "ng-orders-management-v1:build:production"
             },
             "development": {
-              "buildTarget": "ng-violencia-v1:build:development"
+              "buildTarget": "ng-orders-management-v1:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,19 +76,32 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+           "styles": [
+  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+  "node_modules/ngx-toastr/toastr.css",
+  "node_modules/@swimlane/ngx-datatable/index.css",
+  "node_modules/@swimlane/ngx-datatable/themes/material.css",
+  "node_modules/@swimlane/ngx-datatable/assets/icons.css",
+  "src/styles.scss"
+]
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "adc3f736-7e8d-4cbe-80e7-55c15339b277"
   }
 }

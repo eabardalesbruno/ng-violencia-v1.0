@@ -1,0 +1,61 @@
+<main class="app-main">
+<br>
+<!--begin::App Content-->
+<div class="app-content">
+    <!--begin::Container-->
+    <div class="container-fluid">
+    <!--begin::Row-->
+    <div class="row">
+        <div class="col-12">
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">Lista de Personas y su Roles</h3>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
+                <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" title="Remove">
+                <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Slug</th>
+      <th>Imagen</th>
+    </tr>
+  </thead>
+  <tbody>
+
+   @for (rolesPerson of EntidadDistrito; track $index) {
+      <tr>
+     <th>{{rolesPerson.id}}</th>
+    <th>{{rolesPerson.name}}</th>
+    <th>{{rolesPerson.slug}}</th>
+    <th><img [src]="rolesPerson.image" alt="{{rolesPerson.name}}" width="50"></th>
+    
+    </tr>
+}
+  </tbody>
+
+</table>
+
+ </div>
+            <!-- /.card-body -->
+            <div class="card-footer">Footer</div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+        </div>
+    </div>
+    <!--end::Row-->
+    </div>
+</div>
+<!--end::App Content-->
+</main>

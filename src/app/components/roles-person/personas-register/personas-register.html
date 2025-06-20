@@ -1,0 +1,183 @@
+<main class="app-main">
+<br>
+<div class="app-content">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{{id ? 'Editar' : 'Crear'}} Personas</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
+                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" title="Remove">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+            <form [formGroup]="registerForm" class="needs-validation" (ngSubmit)="onSubmit()">
+                <div class="card-body">
+                    <!-- Nombres -->
+                    <div class="mb-3">
+                        <label for="nombres" class="form-label">Nombres</label>
+                        <input type="text"
+                               formControlName="nombres"
+                               class="form-control"
+                               id="nombres"
+                               [ngClass]="{'is-invalid': submitted && nombres.errors}"
+                               placeholder="Ingrese los Nombres">
+                        @if (nombres.errors) {
+                            <div class="invalid-feedback">
+                                @if (nombres.hasError('required')) {
+                                    Nombres es obligatorio.
+                                }
+                                @if (nombres.hasError('minlength')) {
+                                    Nombres debe tener al menos {{nombres.errors['minlength'].requiredLength}} caracteres.
+                                }
+                                @if (nombres.hasError('maxlength')) {
+                                    Nombres no debe exceder los {{nombres.errors['maxlength'].requiredLength}} caracteres.
+                                }
+                                @if (nombres.hasError('pattern')) {
+                                    Solo se permiten letras y espacios.
+                                }
+                            </div>
+                        }
+                    </div>
+                    <!-- Apellidos -->
+                    <div class="mb-3">
+                        <label for="apellidos" class="form-label">Apellidos</label>
+                        <input type="text"
+                               formControlName="apellidos"
+                               class="form-control"
+                               id="apellidos"
+                               [ngClass]="{'is-invalid': submitted && apellidos.errors}"
+                               placeholder="Ingrese los Apellidos">
+                        @if (apellidos.errors) {
+                            <div class="invalid-feedback">
+                                @if (apellidos.hasError('required')) {
+                                    Apellidos es obligatorio.
+                                }
+                                @if (apellidos.hasError('minlength')) {
+                                    Apellidos debe tener al menos {{apellidos.errors['minlength'].requiredLength}} caracteres.
+                                }
+                                @if (apellidos.hasError('maxlength')) {
+                                    Apellidos no debe exceder los {{apellidos.errors['maxlength'].requiredLength}} caracteres.
+                                }
+                                @if (apellidos.hasError('pattern')) {
+                                    Solo se permiten letras y espacios.
+                                }
+                            </div>
+                        }
+                    </div>
+                   
+                    
+
+<!-- Tipo Documento -->
+<div class="mb-3">
+    <label for="tipoDocumento" class="form-label">Tipo Documento</label>
+    <select formControlName="tipoDocumento"
+            class="form-control"
+            id="tipoDocumento"
+            [ngClass]="{'is-invalid': submitted && tipoDocumento.errors}">
+        <option value="">Seleccione</option>
+        <option value="DNI">DNI</option>
+        <option value="RUC">RUC</option>
+        <option value="CE">Carnet de Extranjería</option>
+    </select>
+    @if (tipoDocumento.errors) {
+        <div class="invalid-feedback">
+            @if (tipoDocumento.hasError('required')) {
+                Tipo de documento es obligatorio.
+            }
+        </div>
+    }
+</div>
+
+                    <!-- Número Documento -->
+                    <div class="mb-3">
+                        <label for="numeroDocumento" class="form-label">Número Documento</label>
+                        <input type="text"
+                               formControlName="numeroDocumento"
+                               class="form-control"
+                               id="numeroDocumento"
+                               [ngClass]="{'is-invalid': submitted && numeroDocumento.errors}"
+                               placeholder="Ingrese el número de documento">
+                        @if (numeroDocumento.errors) {
+                            <div class="invalid-feedback">
+                                @if (numeroDocumento.hasError('required')) {
+                                    Número de documento es obligatorio.
+                                }
+                                @if (numeroDocumento.hasError('pattern')) {
+                                    Solo se permiten números (8 a 12 dígitos).
+                                }
+                            </div>
+                        }
+                    </div>
+                    <!-- Fecha Nacimiento -->
+                    <div class="mb-3">
+                        <label for="fechaNacimiento" class="form-label">Fecha Nacimiento</label>
+                        <input type="date"
+                               formControlName="fechaNacimiento"
+                               class="form-control"
+                               id="fechaNacimiento"
+                               [ngClass]="{'is-invalid': submitted && fechaNacimiento.errors}">
+                        @if (fechaNacimiento.errors) {
+                            <div class="invalid-feedback">
+                                @if (fechaNacimiento.hasError('required')) {
+                                    Fecha de nacimiento es obligatoria.
+                                }
+                                @if (fechaNacimiento.hasError('pattern')) {
+                                    Formato de fecha inválido.
+                                }
+                            </div>
+                        }
+                    </div>
+                    <!-- Sexo -->
+                    <div class="mb-3">
+                        <label for="sexo" class="form-label">Sexo</label>
+                        <select formControlName="sexo"
+                                class="form-control"
+                                id="sexo"
+                                [ngClass]="{'is-invalid': submitted && sexo.errors}">
+                            <option value="">Seleccione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                        </select>
+                        @if (sexo.errors) {
+                            <div class="invalid-feedback">
+                                @if (sexo.hasError('required')) {
+                                    Sexo es obligatorio.
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+         <div class="card-footer">
+  <button *ngIf="id; else registrarBtn"
+          type="button"
+          class="btn btn-warning mx-2"
+          (click)="update()">
+    Actualizar Cambios
+  </button>
+  <ng-template #registrarBtn>
+    <button type="button"
+            class="btn btn-primary mx-2"
+            (click)="save()">
+      Registrar
+    </button>
+  </ng-template>
+  <button type="button"
+          class="btn btn-secondary mx-2"
+          [routerLink]="['/personas']">
+    Cancelar
+  </button>
+</div>
+            </form>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</main>

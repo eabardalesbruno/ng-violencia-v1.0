@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^20.0.3",
     "@angular/common": "^20.0.0",
     "@angular/compiler": "^20.0.0",
     "@angular/core": "^20.0.0",
@@ -19,9 +20,15 @@
     "@angular/platform-server": "^20.0.0",
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.1",
+    "@swimlane/ngx-datatable": "^21.1.0",
+    "admin-lte": "^4.0.0-beta3",
+    "bootstrap": "^5.3.7",
     "express": "^5.1.0",
+    "ngx-bootstrap": "^19.0.2",
+    "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0"
+    "tslib": "^2.3.0",
+    "zone.js": "^0.15.1"
   },
   "devDependencies": {
     "@angular/build": "^20.0.1",
