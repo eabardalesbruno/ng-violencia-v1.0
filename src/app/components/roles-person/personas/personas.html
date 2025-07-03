@@ -14,10 +14,11 @@
               <div class="input-group mb-3">
                 <input
                   type="text"
+                  #searchInput
                   class="form-control"
                   placeholder="Ingrese el valor de Nombres a buscar"
                   [(ngModel)]="nombresFilter"
-                  (keyup.enter)="onFilter()"
+                  (keyup)="search(searchInput.value)"
                 />
                 <button
                   class="btn btn-outline-primary"

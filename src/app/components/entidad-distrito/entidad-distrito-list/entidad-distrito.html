@@ -1,61 +1,140 @@
 <main class="app-main">
-<br>
-<!--begin::App Content-->
-<div class="app-content">
-    <!--begin::Container-->
+  <br />
+  <div class="app-content">
     <div class="container-fluid">
-    <!--begin::Row-->
-    <div class="row">
+      <div class="row">
         <div class="col-12">
-        <!-- Default box -->
-        <div class="card">
+          <div class="card">
             <div class="card-header">
-            <h3 class="card-title">Lista de Personas y su Roles</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
-                <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-                <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" title="Remove">
-                <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
+              <h3 class="card-title">
+                Gestión de Entidades por Distrito
+              </h3>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Slug</th>
-      <th>Imagen</th>
-    </tr>
-  </thead>
-  <tbody>
-
-   @for (rolesPerson of EntidadDistrito; track $index) {
-      <tr>
-     <th>{{rolesPerson.id}}</th>
-    <th>{{rolesPerson.name}}</th>
-    <th>{{rolesPerson.slug}}</th>
-    <th><img [src]="rolesPerson.image" alt="{{rolesPerson.name}}" width="50"></th>
-    
-    </tr>
-}
-  </tbody>
-
-</table>
-
- </div>
-            <!-- /.card-body -->
-            <div class="card-footer">Footer</div>
-            <!-- /.card-footer-->
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  #searchInput
+                  class="form-control"
+                  placeholder="Buscar Entidad o Distrito..."
+                  [(ngModel)]="filtroGeneral"
+                  (keyup)="search(searchInput.value)"
+                  autocomplete="off"
+                />
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  (click)="onFilter()"
+                >
+                  <i class="bi bi-search"></i> Buscar
+                </button>
+                <button
+                  class="btn btn-outline-secondary ms-2"
+                  type="button"
+                  (click)="clearFilters()"
+                >
+                  <i class="bi bi-x-circle"></i> Limpiar
+                </button>
+                <button
+                  class="btn btn-success ms-2"
+                  [routerLink]="['/entidaddistrito/register']"
+                >
+                  <i class="bi bi-plus-lg"></i> Agregar Entidad-Distrito
+                </button>
+              </div>
+              <ngx-datatable
+                #table
+                class="material"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [messages]="{emptyMessage: 'No hay datos'}"
+                [rowHeight]="'auto'"
+                [count]="totalRows"
+                [offset]="pageNumber"
+                [limit]="pageSize"
+                [rows]="entidadesDistrito"
+                (page)="onPageChange($event)"
+                (sort)="onSortChange($event)"
+                [externalPaging]="true"
+              >
+                <ngx-datatable-column
+                  name="#"
+                  [width]="50"
+                  [headerClass]="'text-center'"
+                  [cellClass]="'text-center'"
+                >
+                  <ng-template
+                    let-rowIndex="rowIndex"
+                    ngx-datatable-cell-template
+                  >
+                    {{ rowIndex + 1 + (pageNumber * pageSize) }}
+                  </ng-template>
+                </ngx-datatable-column>
+              
+            
+                <ngx-datatable-column name="ENTIDAD" prop="entidadNombre">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span class="badge bg-primary">{{ value }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="DISTRITO" prop="distritoNombre">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span class="badge bg-success">{{ value }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column
+                  name="ACCIONES"
+                  [sortable]="false"
+                  [canAutoResize]="false"
+                  [width]="150"
+                >
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button
+                      class="btn btn-warning btn-sm mx-1"
+                        [routerLink]="['/entidaddistrito/edit', row.id]"
+                    >
+                      <i class="bi bi-pencil-square"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-sm mx-1"
+                      (click)="deleteEntidadDistrito(deleteEntidadDistritoModal, row)"
+                    >
+                      <i class="bi bi-trash3-fill"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+              <div class="mt-2 text-end text-secondary small">
+                Total registros: <b>{{ totalRows }}</b>
+              </div>
+            </div>
+            <div class="card-footer"></div>
+          </div>
         </div>
-        <!-- /.card -->
-        </div>
+      </div>
     </div>
-    <!--end::Row-->
-    </div>
-</div>
-<!--end::App Content-->
+  </div>
 </main>
+
+<ng-template #deleteEntidadDistritoModal>
+  <div class="modal-header">
+    <h4 class="modal-title">Confirmar eliminación</h4>
+  </div>
+  <div class="modal-body">
+    <p>¿Estás seguro de que deseas eliminar esta relación?</p>
+    <div class="alert alert-warning">
+      <strong>Entidad:</strong> {{ entidadDistrito?.entidadNombre }}<br>
+      <strong>Distrito:</strong> {{ entidadDistrito?.distritoNombre }}
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+      Eliminar
+    </button>
+  </div>
+</ng-template>

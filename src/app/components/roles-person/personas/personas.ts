@@ -1,11 +1,11 @@
-import { Component, OnInit, TemplateRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { PersonasService } from '../../../shared/services/personas.service';
 import { PersonaResponse } from '../../../shared/models/response/personas.response';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { DatatableComponent, NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -27,12 +27,17 @@ export class Personas implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  nombresFilter = '';
-  personas: PersonaResponse[] = [];
-  persona?: PersonaResponse;
-  modalRef?: BsModalRef;
+   
+@ViewChild(DatatableComponent) table!: DatatableComponent<PersonaResponse>;
 
-  
+nombresFilter = '';
+personas: PersonaResponse[] = [];
+persona?: PersonaResponse;
+modalRef?: BsModalRef;
+
+
+
+
   totalRows = 0; 
   pageNumber = 0;
   pageSize = 5;
@@ -72,6 +77,15 @@ export class Personas implements OnInit {
         }
       });
   }
+
+  search(text: string) {
+  this.nombresFilter = text;
+  this.pageNumber = 0;
+  if (this.table) {
+    this.table.offset = this.pageNumber;
+  }
+  this.loadPersonas();
+}
 
   onPageChange(event: any) {
     this.pageNumber = event.offset;

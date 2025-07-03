@@ -1,1 +1,271 @@
-<p>roles-person-register works!</p>
+<main class="app-main">
+  <br />
+  <div class="app-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="bi bi-person-gear"></i>
+                {{ isEditMode ? 'Editar Rol de Persona' : 'Registrar Rol de Persona' }}
+              </h3>
+              <div class="card-tools">
+                <span class="badge bg-info" *ngIf="isEditMode">Modo Edición</span>
+                <span class="badge bg-success" *ngIf="!isEditMode">Modo Creación</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <!-- Loading Spinner -->
+              <div *ngIf="isLoading" class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p class="mt-2 text-muted">Cargando datos del registro...</p>
+              </div>
+              
+              <!-- 🆕 Información del Registro ENRIQUECIDA -->
+              <div class="row mb-3" *ngIf="!isLoading && isEditMode">
+                <div class="col-12">
+                  <div class="alert alert-warning">
+                    <h6><i class="bi bi-info-circle"></i> Información del Registro</h6>
+                    <p class="mb-2">
+                      <i class="bi bi-exclamation-triangle"></i> 
+                      <strong>En modo edición, solo se puede modificar el ROL.</strong>
+                      La persona y el caso permanecen bloqueados.
+                    </p>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <strong>ID:</strong> 
+                        <span class="badge bg-secondary">{{ rolesPersonForm.get('id')?.value || 'N/A' }}</span>
+                      </div>
+                      <div class="col-md-3">
+                        <strong>Persona:</strong> 
+                        <span class="badge bg-primary">{{ displayData.personaDisplay }}</span>
+                        <div class="small text-muted mt-1">{{ getPersonaInfo() }}</div>
+                      </div>
+                      <div class="col-md-3">
+                        <strong>Rol:</strong> 
+                        <span class="badge bg-success">{{ displayData.rolDisplay }}</span>
+                        <small class="text-success d-block mt-1">✓ Editable</small>
+                      </div>
+                      <div class="col-md-3">
+                        <strong>Caso:</strong> 
+                        <span class="badge bg-warning text-dark">{{ displayData.casoDisplay }}</span>
+                        <div class="small text-muted mt-1">{{ getCasoInfo() }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Formulario de Edición -->
+              <form [formGroup]="rolesPersonForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+                <div class="row">
+                  <!-- ID del Registro (Solo lectura) -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="id" class="form-label">
+                        <i class="bi bi-hash"></i> ID del Registro
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id"
+                        formControlName="id"
+                        readonly
+                        placeholder="Se asigna automáticamente"
+                      />
+                      <div class="form-text">
+                        <i class="bi bi-lock"></i> Este campo es de solo lectura
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Persona ID -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="persona_id" class="form-label">
+                        <i class="bi bi-person"></i> Persona ID *
+                        <span class="badge bg-danger ms-2" *ngIf="isEditMode">
+                          <i class="bi bi-lock"></i> Bloqueado
+                        </span>
+                      </label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="persona_id"
+                        formControlName="persona_id"
+                        placeholder="Ej: 279"
+                        [class.is-invalid]="persona_id?.invalid && persona_id?.touched"
+                        [class.is-valid]="persona_id?.valid && persona_id?.touched"
+                      />
+                      <div class="invalid-feedback" *ngIf="persona_id?.invalid && persona_id?.touched">
+                        <div *ngIf="persona_id?.errors?.['required']">
+                          <i class="bi bi-exclamation-circle"></i> Persona ID es requerido
+                        </div>
+                        <div *ngIf="persona_id?.errors?.['min']">
+                          <i class="bi bi-exclamation-circle"></i> Persona ID debe ser mayor a 0
+                        </div>
+                      </div>
+                      <!-- 🆕 Mostrar información enriquecida -->
+                      <div class="form-text" *ngIf="personaDetail">
+                        <i class="bi bi-info-circle text-primary"></i> 
+                        <strong>{{ personaDetail.nombres }} {{ personaDetail.apellidos }}</strong>
+                        <br>
+                        <small>{{ personaDetail.tipo_documento }}: {{ personaDetail.numero_documento }}</small>
+                      </div>
+                      <div class="form-text text-muted" *ngIf="isEditMode">
+                        <i class="bi bi-lock"></i> Este campo no se puede editar
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- Rol ID -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="rol_id" class="form-label">
+                        <i class="bi bi-shield-check"></i> Rol *
+                        <span class="badge bg-success ms-2" *ngIf="isEditMode">
+                          <i class="bi bi-pencil"></i> Editable
+                        </span>
+                      </label>
+                      
+                      <!-- 🆕 Dropdown para seleccionar rol -->
+                      <select
+                        class="form-select"
+                        id="rol_id"
+                        formControlName="rol_id"
+                        [class.is-invalid]="rol_id?.invalid && rol_id?.touched"
+                        [class.is-valid]="rol_id?.valid && rol_id?.touched"
+                      >
+                        <option value="">-- Seleccione un rol --</option>
+                        <option 
+                          *ngFor="let role of availableRoles" 
+                          [value]="role.id"
+                          [selected]="role.id === rol_id?.value"
+                        >
+                          {{ role.nombre }} (ID: {{ role.id }})
+                        </option>
+                      </select>
+                      
+                      <div class="invalid-feedback" *ngIf="rol_id?.invalid && rol_id?.touched">
+                        <div *ngIf="rol_id?.errors?.['required']">
+                          <i class="bi bi-exclamation-circle"></i> Debe seleccionar un rol
+                        </div>
+                        <div *ngIf="rol_id?.errors?.['min']">
+                          <i class="bi bi-exclamation-circle"></i> Rol ID debe ser mayor a 0
+                        </div>
+                        <div *ngIf="rol_id?.errors?.['invalidRole']">
+                          <i class="bi bi-exclamation-circle"></i> El rol seleccionado no está permitido
+                        </div>
+                      </div>
+                      
+                      <!-- 🆕 Mostrar información enriquecida -->
+                      <div class="form-text" *ngIf="rolDetail">
+                        <i class="bi bi-info-circle text-success"></i> 
+                        <strong>Rol actual: {{ rolDetail.nombre }}</strong>
+                      </div>
+                      <div class="form-text text-success" *ngIf="isEditMode">
+                        <i class="bi bi-pencil"></i> Solo se puede cambiar entre los roles permitidos
+                      </div>
+                      
+                      <!-- 🆕 Lista de roles permitidos -->
+                      <div class="form-text text-muted mt-2">
+                        <small>
+                          <i class="bi bi-list-check"></i> 
+                          <strong>Roles permitidos:</strong> 
+                          <span *ngFor="let role of availableRoles; let last = last">
+                            {{ role.nombre }}{{ !last ? ', ' : '' }}
+                          </span>
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Caso ID -->
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="caso_id" class="form-label">
+                        <i class="bi bi-folder"></i> Caso ID *
+                        <span class="badge bg-danger ms-2" *ngIf="isEditMode">
+                          <i class="bi bi-lock"></i> Bloqueado
+                        </span>
+                      </label>
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="caso_id"
+                        formControlName="caso_id"
+                        placeholder="Ej: 537"
+                        [class.is-invalid]="caso_id?.invalid && caso_id?.touched"
+                        [class.is-valid]="caso_id?.valid && caso_id?.touched"
+                      />
+                      <div class="invalid-feedback" *ngIf="caso_id?.invalid && caso_id?.touched">
+                        <div *ngIf="caso_id?.errors?.['required']">
+                          <i class="bi bi-exclamation-circle"></i> Caso ID es requerido
+                        </div>
+                        <div *ngIf="caso_id?.errors?.['min']">
+                          <i class="bi bi-exclamation-circle"></i> Caso ID debe ser mayor a 0
+                        </div>
+                      </div>
+                      <!-- 🆕 Mostrar información enriquecida -->
+                      <div class="form-text" *ngIf="casoDetail">
+                        <i class="bi bi-info-circle text-warning"></i> 
+                        <strong>{{ casoDetail.codigo_caso }}</strong>
+                        <br>
+                        <small>Estado: {{ casoDetail.estado }} | Fecha: {{ casoDetail.fecha_caso }}</small>
+                      </div>
+                      <div class="form-text text-muted" *ngIf="isEditMode">
+                        <i class="bi bi-lock"></i> Este campo no se puede editar
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="row">
+                  <div class="col-12">
+                    <div class="d-flex justify-content-start">
+                      <button
+                        type="submit"
+                        class="btn btn-primary me-2"
+                        [disabled]="rolesPersonForm.invalid || isLoading"
+                      >
+                        <i class="bi bi-check-circle"></i> 
+                        Actualizar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-secondary me-2"
+                        (click)="onCancel()"
+                      >
+                        <i class="bi bi-x-circle"></i> Cancelar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Información de Ayuda -->
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <div class="alert alert-light">
+                      <h6><i class="bi bi-lightbulb"></i> Información</h6>
+                      <ul class="mb-0">
+                        <li>Los campos marcados con (*) son obligatorios</li>
+                        <li>Los IDs deben ser números enteros positivos</li>
+                        <li>La información adicional se carga automáticamente</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,379 @@
+<!-- casos-register.html -->
+<div class="casos-register-container">
+  <!-- Header con progreso -->
+  <div class="header-section">
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+      <div class="step-indicators">
+        <div class="step-indicator" 
+             [class.active]="currentStep >= 1" 
+             [class.completed]="currentStep > 1"
+             (click)="goToStep(1)">
+          <span class="step-number">1</span>
+          <span class="step-label">Distrito</span>
+        </div>
+        <div class="step-indicator" 
+             [class.active]="currentStep >= 2" 
+             [class.completed]="currentStep > 2"
+             (click)="goToStep(2)">
+          <span class="step-number">2</span>
+          <span class="step-label">Delitos</span>
+        </div>
+        <div class="step-indicator" 
+             [class.active]="currentStep >= 3" 
+             [class.completed]="currentStep > 3"
+             (click)="goToStep(3)">
+          <span class="step-number">3</span>
+          <span class="step-label">Personas</span>
+        </div>
+        <div class="step-indicator" 
+             [class.active]="currentStep >= 4" 
+             [class.completed]="currentStep > 4"
+             (click)="goToStep(4)">
+          <span class="step-number">4</span>
+          <span class="step-label">Confirmar</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="step-title">
+      <h1>{{ getStepTitle() }}</h1>
+      <p class="step-description">Paso {{ currentStep }} de {{ totalSteps }}</p>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- Mensajes de error/éxito -->
+    <div class="alert-container" *ngIf="errorMessage || successMessage">
+      <div class="alert alert-error" *ngIf="errorMessage">
+        <i class="icon-error"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+      <div class="alert alert-success" *ngIf="successMessage">
+        <i class="icon-success"></i>
+        <span>{{ successMessage }}</span>
+      </div>
+    </div>
+
+    <!-- Paso 1: Seleccionar Distrito -->
+    <div class="step-content" *ngIf="currentStep === 1">
+      <div class="search-container">
+        <div class="search-box">
+          <i class="icon-search"></i>
+          <input type="text" 
+                 [(ngModel)]="searchDistrito"
+                 (input)="filtrarDistritos()"
+                 placeholder="Buscar distrito..."
+                 class="search-input">
+        </div>
+      </div>
+
+      <div class="cards-grid" *ngIf="!isLoading">
+        <div class="district-card" 
+             *ngFor="let distrito of distritosFiltrados"
+             [class.selected]="selectedDistrito?.id === distrito.id"
+             (click)="seleccionarDistrito(distrito)">
+          <div class="card-header">
+            <h3>{{ distrito.nombre }}</h3>
+            <span class="district-code">{{ distrito.id || 'N/A' }}</span>
+          </div>
+          <div class="card-body">
+            <p>{{ distrito.nombre || 'Sin descripción' }}</p>
+          </div>
+          <div class="card-footer">
+            <span class="select-indicator" *ngIf="selectedDistrito?.id === distrito.id">
+              <i class="icon-check"></i>
+              Seleccionado
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Cargando distritos...</p>
+      </div>
+    </div>
+
+    <!-- Paso 2: Seleccionar Delitos -->
+    <div class="step-content" *ngIf="currentStep === 2">
+      <div class="search-container">
+        <div class="search-box">
+          <i class="icon-search"></i>
+          <input type="text" 
+                 [(ngModel)]="searchDelito"
+                 (input)="filtrarDelitos()"
+                 placeholder="Buscar delito..."
+                 class="search-input">
+        </div>
+        <div class="selected-count" *ngIf="selectedDelitos.length > 0">
+          <span>{{ selectedDelitos.length }} delito(s) seleccionado(s)</span>
+          <button type="button" class="btn-clear" (click)="limpiarDelitos()">
+            <i class="icon-clear"></i>
+            Limpiar
+          </button>
+        </div>
+      </div>
+
+      <div class="cards-grid" *ngIf="!isLoading">
+        <div class="crime-card" 
+             *ngFor="let delito of delitosFiltrados"
+             [class.selected]="isDelitoSelected(delito)">
+          <div class="card-header">
+            <h3>{{ delito.nombre }}</h3>
+            <div class="checkbox-indicator">
+              <input type="checkbox" 
+                     [checked]="isDelitoSelected(delito)"
+                     (change)="toggleDelito(delito)">
+            </div>
+          </div>
+          <div class="card-body">
+            <p>{{ delito.descripcion || 'Sin descripción' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="selected-crimes" *ngIf="selectedDelitos.length > 0">
+        <h3>Delitos seleccionados:</h3>
+        <div class="selected-items">
+          <div class="selected-item" *ngFor="let delito of selectedDelitos">
+            <span>{{ delito.nombre }}</span>
+            <button type="button" (click)="toggleDelito(delito)" class="btn-remove">
+              <i class="icon-close"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 3: Agregar Personas -->
+    <div class="step-content" *ngIf="currentStep === 3">
+      <div class="personas-section">
+        <div class="section-header">
+          <h3>Personas involucradas</h3>
+          <button type="button" class="btn-add" (click)="addPersona()">
+            <i class="icon-add"></i>
+            Agregar persona
+          </button>
+        </div>
+
+        <div class="personas-list">
+          <div class="persona-card" *ngFor="let persona of personas; let i = index">
+            <div class="persona-header">
+              <h4>Persona {{ i + 1 }}</h4>
+              <button type="button" 
+                      class="btn-remove-person" 
+                      (click)="removePersona(i)"
+                      *ngIf="personas.length > 2">
+                <i class="icon-trash"></i>
+              </button>
+            </div>
+
+            <div class="persona-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Nombres *</label>
+                  <input type="text" 
+                         [(ngModel)]="persona.nombres"
+                         placeholder="Nombres completos"
+                         class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Apellidos *</label>
+                  <input type="text" 
+                         [(ngModel)]="persona.apellidos"
+                         placeholder="Apellidos completos"
+                         class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Tipo de Documento *</label>
+                  <select [(ngModel)]="persona.tipo_documento" class="form-control">
+                    <option *ngFor="let tipo of tiposDocumento" [value]="tipo.value">
+                      {{ tipo.label }}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Número de Documento *</label>
+                  <input type="text" 
+                         [(ngModel)]="persona.numero_documento"
+                         placeholder="Número de documento"
+                         class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Fecha de Nacimiento *</label>
+                  <input type="date" 
+                         [(ngModel)]="persona.fecha_nacimiento"
+                         class="form-control">
+                </div>
+                <div class="form-group">
+                  <label>Sexo *</label>
+                  <select [(ngModel)]="persona.sexo" class="form-control">
+                    <option *ngFor="let sexo of sexos" [value]="sexo.value">
+                      {{ sexo.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Roles *</label>
+                <div class="roles-grid">
+                  <div class="role-item" 
+                       *ngFor="let rol of rolesList"
+                       [class.selected]="isRolSelected(persona, rol)"
+                       (click)="toggleRolPersona(persona, rol)">
+                    <div class="role-checkbox">
+                      <input type="checkbox" 
+                             [checked]="isRolSelected(persona, rol)"
+                             (change)="toggleRolPersona(persona, rol)">
+                    </div>
+                    <div class="role-info">
+                      <span class="role-name">{{ rol.nombre }}</span>
+                      <span class="role-desc">{{ rol.descripcion }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 4: Confirmar Registro -->
+    <div class="step-content" *ngIf="currentStep === 4">
+      <div class="confirmation-section">
+        <h3>Resumen del Caso</h3>
+        
+        <div class="summary-card">
+          <div class="summary-item">
+            <h4>Distrito Seleccionado</h4>
+            <p>{{ selectedDistrito?.nombre || 'No seleccionado' }}</p>
+            <small>Código: {{ getDistritoCodigo(selectedDistrito?.id) }}</small>
+          </div>
+
+          <div class="summary-item">
+            <h4>Delitos ({{ selectedDelitos.length }})</h4>
+            <div class="delitos-summary">
+              <span class="delito-tag" *ngFor="let delito of selectedDelitos">
+                {{ delito.nombre }}
+              </span>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <h4>Personas Involucradas ({{ personas.length }})</h4>
+            <div class="personas-summary">
+              <div class="persona-summary" *ngFor="let persona of personas; let i = index">
+                <div class="persona-info">
+                  <h5>{{ persona.nombres }} {{ persona.apellidos }}</h5>
+                  <p>{{ persona.tipo_documento }}: {{ persona.numero_documento }}</p>
+                  <p>Sexo: {{ getSexoLabel(persona.sexo) }}</p>
+                  <p>Nacimiento: {{ persona.fecha_nacimiento }}</p>
+                </div>
+                <div class="persona-roles">
+                  <span class="role-tag" *ngFor="let rolId of persona.roles">
+                    {{ getRoleName(rolId) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="confirmation-actions">
+          <button type="button" 
+                  class="btn-register" 
+                  (click)="registrarCaso()"
+                  [disabled]="!canRegisterCase() || isLoading">
+            <span *ngIf="!isLoading">
+              <i class="icon-save"></i>
+              Registrar Caso
+            </span>
+            <span *ngIf="isLoading">
+              <div class="spinner-small"></div>
+              Registrando...
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navegación -->
+  <div class="navigation-section">
+    <button type="button" 
+            class="btn-nav btn-prev" 
+            (click)="prevStep()"
+            [disabled]="currentStep === 1">
+      <i class="icon-arrow-left"></i>
+      Anterior
+    </button>
+    
+    <button type="button" 
+            class="btn-nav btn-next" 
+            (click)="nextStep()"
+            [disabled]="currentStep === totalSteps || !canProceedToNextStep()"
+            *ngIf="currentStep < totalSteps">
+      Siguiente
+      <i class="icon-arrow-right"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Modal de éxito -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>¡Caso Registrado Exitosamente!</h3>
+      <button type="button" class="btn-close" (click)="closeModal()">
+        <i class="icon-close"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="success-icon">
+        <i class="icon-check-circle"></i>
+      </div>
+      
+      <div class="case-details" *ngIf="casoRegistrado">
+        <h4>Detalles del Caso</h4>
+        <div class="detail-item">
+          <span class="label">Código:</span>
+          <span class="value">{{ casoRegistrado.codigo_caso }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">ID:</span>
+          <span class="value">{{ casoRegistrado.id }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Estado:</span>
+          <span class="value">{{ casoRegistrado.estado_caso }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Fecha:</span>
+          <span class="value">{{ casoRegistrado.fecha_caso | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-actions">
+      <button type="button" class="btn-secondary" (click)="registrarOtroCaso()">
+        Registrar Otro Caso
+      </button>
+      <button type="button" class="btn-primary" (click)="volverInicio()">
+        Ir al Inicio
+      </button>
+    </div>
+  </div>
+</div>

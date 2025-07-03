@@ -1,61 +1,247 @@
 <main class="app-main">
-<br>
-<!--begin::App Content-->
-<div class="app-content">
-    <!--begin::Container-->
+  <br />
+  <div class="app-content">
     <div class="container-fluid">
-    <!--begin::Row-->
-    <div class="row">
+      <div class="row">
         <div class="col-12">
-        <!-- Default box -->
-        <div class="card">
+          <div class="card">
             <div class="card-header">
-            <h3 class="card-title">Lista de Personas y su Roles</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
-                <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-                <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" title="Remove">
-                <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
+              <h3 class="card-title">
+                <i class="bi bi-people-fill"></i>
+                Roles de Personas en Casos
+              </h3>
+              <div class="card-tools">
+                <span class="badge bg-info" *ngIf="isLoading">
+                  <i class="bi bi-arrow-clockwise"></i> Cargando...
+                </span>
+                <span class="badge bg-warning" *ngIf="isSearching">
+                  <i class="bi bi-search"></i> Buscando...
+                </span>
+              </div>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-    <tr>
-      <th>Id</th>
-      <th>Name</th>
-      <th>Slug</th>
-      <th>Imagen</th>
-    </tr>
-  </thead>
-  <tbody>
-
-   @for (rolesPerson of Rolesperson; track $index) {
-      <tr>
-     <th>{{rolesPerson.id}}</th>
-    <th>{{rolesPerson.name}}</th>
-    <th>{{rolesPerson.slug}}</th>
-    <th><img [src]="rolesPerson.image" alt="{{rolesPerson.name}}" width="50"></th>
-    
-    </tr>
-}
-  </tbody>
-
-</table>
-
- </div>
-            <!-- /.card-body -->
-            <div class="card-footer">Footer</div>
-            <!-- /.card-footer-->
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  #searchInput
+                  class="form-control"
+                  placeholder="Buscar por ID o nombre de persona (ej: Eduardo Antonio)"
+                  [(ngModel)]="searchText"
+                  (keyup)="search(searchInput.value)"
+                />
+                <button
+                  class="btn btn-outline-primary"
+                  type="button"
+                  (click)="onFilter()"
+                  [disabled]="isSearching"
+                >
+                  <i class="bi bi-search" *ngIf="!isSearching"></i>
+                  <i class="bi bi-hourglass-split" *ngIf="isSearching"></i>
+                  {{ isSearching ? 'Buscando...' : 'Buscar' }}
+                </button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="clearSearch()"
+                  *ngIf="searchText"
+                  title="Limpiar búsqueda"
+                >
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              </div>
+              
+              <!-- 🆕 Información de búsqueda -->
+              <div class="alert alert-info" *ngIf="searchText && !isSearching">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-info-circle me-2"></i>
+                  <div>
+                    <strong>Búsqueda activa:</strong> "{{ searchText }}"
+                    <br>
+                    <small class="text-muted">
+                      Buscando registros por ID o nombre de persona...
+                    </small>
+                  </div>
+                </div>
+              </div>
+              
+              <ngx-datatable
+                #table
+                class="material"
+                [columnMode]="'force'"
+                [headerHeight]="50"
+                [footerHeight]="50"
+                [messages]="{emptyMessage: 'No hay datos'}"
+                [rowHeight]="'auto'"
+                [count]="totalRows"
+                [offset]="pageNumber"
+                [limit]="pageSize"
+                [rows]="personas"
+                (page)="onPageChange($event)"
+                (sort)="onSortChange($event)"
+                [externalPaging]="true"
+              >
+                <ngx-datatable-column
+                  name="#"
+                  [width]="50"
+                  [headerClass]="'text-center'"
+                  [cellClass]="'text-center'"
+                >
+                  <ng-template
+                    let-rowIndex="rowIndex"
+                    ngx-datatable-cell-template
+                  >
+                    {{ rowIndex + 1 + (pageNumber * pageSize) }}
+                  </ng-template>
+                </ngx-datatable-column>
+                
+                <ngx-datatable-column name="ID" prop="id" [width]="80">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    <span class="badge bg-secondary">{{ value }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                
+                <!-- 🆕 Columna de Persona enriquecida -->
+                <ngx-datatable-column name="PERSONA" [width]="250">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div class="d-flex flex-column">
+                      <ng-container *ngIf="row.loading">
+                        <span class="text-muted">
+                          <i class="bi bi-hourglass-split"></i> Cargando...
+                        </span>
+                      </ng-container>
+                      <ng-container *ngIf="!row.loading">
+                        <strong class="text-primary">{{ row.persona_nombre || 'No disponible' }}</strong>
+                        <small class="text-muted">
+                          ID: {{ row.persona_id }}
+                        </small>
+                      </ng-container>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+                
+                <!-- 🆕 Columna de Rol enriquecida -->
+                <ngx-datatable-column name="ROL" [width]="150">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div class="d-flex flex-column">
+                      <ng-container *ngIf="row.loading">
+                        <span class="badge bg-secondary">
+                          <i class="bi bi-hourglass-split"></i> Cargando...
+                        </span>
+                      </ng-container>
+                      <ng-container *ngIf="!row.loading">
+                        <span class="badge bg-success">{{ row.rol_nombre || 'No disponible' }}</span>
+                        <small class="text-muted">ID: {{ row.rol_id }}</small>
+                      </ng-container>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+                
+                <!-- 🆕 Columna de Caso enriquecida -->
+                <ngx-datatable-column name="CASO" [width]="200">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div class="d-flex flex-column">
+                      <ng-container *ngIf="row.loading">
+                        <span class="text-muted">
+                          <i class="bi bi-hourglass-split"></i> Cargando...
+                        </span>
+                      </ng-container>
+                      <ng-container *ngIf="!row.loading">
+                        <strong class="text-warning">{{ row.caso_codigo || 'No disponible' }}</strong>
+                        <small class="text-muted">
+                          ID: {{ row.caso_id }}
+                        </small>
+                      </ng-container>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+                
+                <ngx-datatable-column
+                  name="ACCIONES"
+                  [sortable]="false"
+                  [canAutoResize]="false"
+                  [width]="150"
+                  [headerClass]="'text-center'"
+                  [cellClass]="'text-center'"
+                >
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div class="btn-group" role="group">
+                      <button
+                        class="btn btn-warning btn-sm"
+                        [routerLink]="['/rolesperson/edit', row.id]"
+                        title="Editar registro"
+                      >
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm"
+                        (click)="deletePersona(deletePersonaModal, row)"
+                        title="Eliminar registro"
+                      >
+                        <i class="bi bi-trash3-fill"></i>
+                      </button>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+              
+              <div class="row mt-2">
+                <div class="col-6">
+                  <small class="text-muted">
+                    <i class="bi bi-info-circle"></i> 
+                    Mostrando {{ personas.length }} de {{ totalRows }} registros
+                  </small>
+                </div>
+                <div class="col-6 text-end">
+                  <small class="text-secondary">
+                    Total registros: <strong>{{ totalRows }}</strong>
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer"></div>
+          </div>
         </div>
-        <!-- /.card -->
-        </div>
+      </div>
     </div>
-    <!--end::Row-->
-    </div>
-</div>
-<!--end::App Content-->
+  </div>
 </main>
+
+<!-- 🆕 Modal mejorado para eliminación -->
+<ng-template #deletePersonaModal>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="bi bi-exclamation-triangle text-danger"></i>
+      Confirmar Eliminación
+    </h4>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-warning">
+      <p class="mb-2">
+        <strong>¿Estás seguro de que deseas eliminar este registro?</strong>
+      </p>
+      <div class="row" *ngIf="persona">
+        <div class="col-12">
+          <ul class="list-unstyled mb-0">
+            <li><strong>ID:</strong> {{ persona.id }}</li>
+            <li><strong>Persona:</strong> {{ persona.persona_nombre || 'ID: ' + persona.persona_id }}</li>
+            <li><strong>Rol:</strong> {{ persona.rol_nombre || 'ID: ' + persona.rol_id }}</li>
+            <li><strong>Caso:</strong> {{ persona.caso_codigo || 'ID: ' + persona.caso_id }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <p class="text-muted">
+      <i class="bi bi-info-circle"></i> 
+      Esta acción no se puede deshacer.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      <i class="bi bi-x-circle"></i> Cancelar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+      <i class="bi bi-trash3"></i> Eliminar
+    </button>
+  </div>
+</ng-template>

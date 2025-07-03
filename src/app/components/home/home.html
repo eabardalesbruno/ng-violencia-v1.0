@@ -1,38 +1,421 @@
-<main class="app-main">
-<br>
-<!--begin::App Content-->
-<div class="app-content">
-    <!--begin::Container-->
-    <div class="container-fluid">
-    <!--begin::Row-->
-    <div class="row">
-        <div class="col-12">
-        <!-- Default box -->
-        <div class="card">
-            <div class="card-header">
-            <h3 class="card-title">Pagina Principal</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse" title="Collapse">
-                <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
-                <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-lte-toggle="card-remove" title="Remove">
-                <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-            </div>
-            <div class="card-body">
-                Bienvenido al Sistema
-            </div>
-            <!-- /.card-body -->
-            <div class="card-footer">Footer</div>
-            <!-- /.card-footer-->
+<!-- 🎉 POPUP ESPECTACULAR DE BIENVENIDA -->
+<div class="welcome-modal-overlay" *ngIf="showWelcomeModal" [@slideInOut] (click)="closeWelcomeModal()">
+  <div class="welcome-modal-container" (click)="$event.stopPropagation()">
+    
+    <!-- Botón de cerrar elegante -->
+    <button class="modal-close-btn" (click)="closeWelcomeModal()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    
+    <!-- Header del modal con animación -->
+    <div class="modal-header-section">
+      <div class="welcome-logo">
+        <div class="logo-icon">
+          <i class="bi bi-shield-check"></i>
         </div>
-        <!-- /.card -->
+        <div class="logo-pulse"></div>
+      </div>
+      
+      <h1 class="welcome-main-title">
+        ¡Bienvenido al Sistema!
+      </h1>
+      
+      <h2 class="welcome-subtitle">
+        <span class="highlight-text">Sistema de Gestión de Delitos</span>
+      </h2>
+      
+      <p class="welcome-description">
+        Plataforma integral y avanzada para la gestión, seguimiento y análisis de casos de delitos.
+        <br>
+        <strong>Administra eficientemente la información y toma decisiones basadas en datos.</strong>
+      </p>
+    </div>
+    
+    <!-- Estadísticas llamativas en grid organizado -->
+    <div class="modal-stats-section">
+      <div class="modal-stats-grid">
+        <div class="stat-box stat-primary">
+          <div class="stat-icon">
+            <i class="bi bi-file-earmark-text"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ totalCasos || 156 }}</div>
+            <div class="stat-label">Casos Registrados</div>
+          </div>
         </div>
+        
+        <div class="stat-box stat-success">
+          <div class="stat-icon">
+            <i class="bi bi-people"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ totalPersonas || 342 }}</div>
+            <div class="stat-label">Personas</div>
+          </div>
+        </div>
+        
+        <div class="stat-box stat-warning">
+          <div class="stat-icon">
+            <i class="bi bi-check-circle"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ casosResueltos || 89 }}</div>
+            <div class="stat-label">Casos Resueltos</div>
+          </div>
+        </div>
+        
+        <div class="stat-box stat-info">
+          <div class="stat-icon">
+            <i class="bi bi-clock-history"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ casosEnProceso || 67 }}</div>
+            <div class="stat-label">En Proceso</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <!--end::Row-->
+    
+    <!-- Características destacadas -->
+    <div class="features-showcase">
+      <h3 class="features-title">🚀 Características Principales</h3>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-search"></i>
+          </div>
+          <span class="feature-text">Búsqueda Inteligente</span>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-graph-up-arrow"></i>
+          </div>
+          <span class="feature-text">Análisis Avanzado</span>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-shield-lock"></i>
+          </div>
+          <span class="feature-text">Seguridad Total</span>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">
+            <i class="bi bi-lightning"></i>
+          </div>
+          <span class="feature-text">Rápido y Eficiente</span>
+        </div>
+      </div>
     </div>
+    
+    <!-- Botones de acción principales -->
+    <div class="modal-actions">
+      <button class="btn-explore" (click)="closeWelcomeModal()">
+        <i class="bi bi-rocket-takeoff"></i>
+        <span>Explorar Sistema</span>
+      </button>
+      
+      <button class="btn-secondary" (click)="closeWelcomeModal()">
+        <i class="bi bi-play-circle"></i>
+        <span>Comenzar</span>
+      </button>
+    </div>
+    
+    <!-- Decoraciones animadas -->
+    <div class="modal-decorations">
+      <div class="modal-decoration decoration-1"></div>
+      <div class="modal-decoration decoration-2"></div>
+      <div class="modal-decoration decoration-3"></div>
+    </div>
+  </div>
 </div>
-<!--end::App Content-->
+
+<main class="app-main home-main">
+  <!-- 🚀 HERO SECTION RENOVADO -->
+  <section class="hero-section-modern">
+    <div class="hero-background">
+      <div class="gradient-overlay"></div>
+      <div class="animated-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+      </div>
+    </div>
+    
+    <div class="hero-container">
+      <div class="hero-content-modern">
+        <div class="hero-badge-modern">
+          <i class="bi bi-shield-check"></i>
+          <span>Sistema de Gestión de Delitos</span>
+          <div class="badge-shine"></div>
+        </div>
+        
+        <h1 class="hero-title-modern">
+          Gestión <span class="text-gradient">Inteligente</span>
+          <br>
+          de Casos <span class="text-gradient">Judiciales</span>
+        </h1>
+        
+        <p class="hero-description-modern">
+          Plataforma avanzada con inteligencia artificial para la administración, 
+          seguimiento y análisis de casos de delitos. Optimiza tus procesos 
+          y toma decisiones basadas en datos precisos.
+        </p>
+        
+        <div class="hero-actions-modern">
+          <button class="btn-primary-modern" routerLink="/casos">
+            <span class="btn-content">
+              <i class="bi bi-plus-circle"></i>
+              <span>Gestionar Casos</span>
+            </span>
+            <div class="btn-glow"></div>
+          </button>
+          
+          <button class="btn-secondary-modern" routerLink="/rolesperson">
+            <span class="btn-content">
+              <i class="bi bi-people"></i>
+              <span>Gestionar Personas</span>
+            </span>
+          </button>
+        </div>
+        
+        <div class="hero-features-preview">
+          <div class="feature-preview">
+            <i class="bi bi-lightning-charge"></i>
+            <span>Búsqueda Instantánea</span>
+          </div>
+          <div class="feature-preview">
+            <i class="bi bi-graph-up"></i>
+            <span>Analytics en Tiempo Real</span>
+          </div>
+          <div class="feature-preview">
+            <i class="bi bi-shield-lock"></i>
+            <span>Seguridad Avanzada</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-stats-modern">
+        <div class="stats-container">
+          <div class="stat-card-modern stat-primary">
+            <div class="stat-icon-modern">
+              <i class="bi bi-file-earmark-text"></i>
+              <div class="icon-glow"></div>
+            </div>
+            <div class="stat-info-modern">
+              <div class="stat-number-modern">{{ totalCasos || 156 }}</div>
+              <div class="stat-label-modern">Casos Totales</div>
+              <div class="stat-trend">
+                <i class="bi bi-arrow-up"></i>
+                <span>+12%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stat-card-modern stat-success">
+            <div class="stat-icon-modern">
+              <i class="bi bi-people"></i>
+              <div class="icon-glow"></div>
+            </div>
+            <div class="stat-info-modern">
+              <div class="stat-number-modern">{{ totalPersonas || 342 }}</div>
+              <div class="stat-label-modern">Personas</div>
+              <div class="stat-trend">
+                <i class="bi bi-arrow-up"></i>
+                <span>+8%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stat-card-modern stat-warning">
+            <div class="stat-icon-modern">
+              <i class="bi bi-check-circle"></i>
+              <div class="icon-glow"></div>
+            </div>
+            <div class="stat-info-modern">
+              <div class="stat-number-modern">{{ casosResueltos || 89 }}</div>
+              <div class="stat-label-modern">Resueltos</div>
+              <div class="stat-trend">
+                <i class="bi bi-arrow-up"></i>
+                <span>+15%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="stat-card-modern stat-info">
+            <div class="stat-icon-modern">
+              <i class="bi bi-clock"></i>
+              <div class="icon-glow"></div>
+            </div>
+            <div class="stat-info-modern">
+              <div class="stat-number-modern">{{ casosEnProceso || 67 }}</div>
+              <div class="stat-label-modern">En Proceso</div>
+              <div class="stat-trend">
+                <i class="bi bi-arrow-down"></i>
+                <span>-5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Actions Section -->
+  <section class="quick-actions-section">
+    <div class="container-fluid">
+      <div class="section-header">
+        <h2 class="section-title">Acciones Rápidas</h2>
+        <p class="section-description">Accede rápidamente a las funciones principales del sistema</p>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="action-card" routerLink="/casos">
+            <div class="action-icon">
+              <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <h3 class="action-title">Gestionar Casos</h3>
+            <p class="action-description">Ve y administra todos los casos del sistema</p>
+            <div class="action-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="action-card" routerLink="/casos/register">
+            <div class="action-icon">
+              <i class="bi bi-file-earmark-plus"></i>
+            </div>
+            <h3 class="action-title">Registrar Caso</h3>
+            <p class="action-description">Ingresa un nuevo caso al sistema</p>
+            <div class="action-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="action-card" routerLink="/rolesperson">
+            <div class="action-icon">
+              <i class="bi bi-people"></i>
+            </div>
+            <h3 class="action-title">Gestionar Personas</h3>
+            <p class="action-description">Administra personas y roles</p>
+            <div class="action-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="action-card" routerLink="/entidaddistrito">
+            <div class="action-icon">
+              <i class="bi bi-building"></i>
+            </div>
+            <h3 class="action-title">Entidades</h3>
+            <p class="action-description">Gestiona distritos y entidades</p>
+            <div class="action-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Activity Section -->
+  <section class="recent-activity-section">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="activity-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="bi bi-clock-history"></i>
+                Actividad Reciente
+              </h3>
+            </div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="bi bi-file-earmark-plus"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Nuevo caso registrado</div>
+                  <div class="activity-meta">Caso #2024-001 - Hace 2 horas</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="bi bi-person-plus"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Persona agregada al sistema</div>
+                  <div class="activity-meta">Juan Carlos Pérez - Hace 4 horas</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Caso resuelto</div>
+                  <div class="activity-meta">Caso #2024-002 - Ayer</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="bi bi-pencil-square"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Caso actualizado</div>
+                  <div class="activity-meta">Caso #2024-003 - Hace 2 días</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="tips-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="bi bi-lightbulb"></i>
+                Consejos y Ayuda
+              </h3>
+            </div>
+            <div class="tips-content">
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="bi bi-search"></i>
+                </div>
+                <div class="tip-content">
+                  <div class="tip-title">Búsqueda Inteligente</div>
+                  <div class="tip-description">Utiliza la búsqueda por nombre o ID para encontrar personas rápidamente</div>
+                </div>
+              </div>
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="bi bi-filter"></i>
+                </div>
+                <div class="tip-content">
+                  <div class="tip-title">Filtros Avanzados</div>
+                  <div class="tip-description">Usa los filtros para encontrar casos específicos por fecha, estado o tipo</div>
+                </div>
+              </div>
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="bi bi-keyboard"></i>
+                </div>
+                <div class="tip-content">
+                  <div class="tip-title">Atajos de Teclado</div>
+                  <div class="tip-description">Presiona Ctrl+N para crear un nuevo caso rápidamente</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>

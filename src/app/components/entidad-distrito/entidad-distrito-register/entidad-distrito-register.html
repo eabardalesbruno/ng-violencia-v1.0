@@ -1,1 +1,121 @@
-<p>roles-person-register works!</p>
+<main class="app-main">
+  <br />
+  <div class="app-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0">
+                  {{ isEditMode ? 'Editar' : 'Agregar' }} Entidad-Distrito
+                </h3>
+                <a [routerLink]="['/entidaddistrito']" class="btn btn-outline-secondary">
+                  <i class="bi bi-arrow-left"></i> Volver al listado
+                </a>
+              </div>
+            </div>
+            <div class="card-body">
+              <form [formGroup]="entidadDistritoForm">
+                
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="entidad_id" class="form-label">
+                        Entidad <span class="text-danger">*</span>
+                      </label>
+                      <select 
+                        class="form-select" 
+                        id="entidad_id" 
+                        formControlName="entidad_id"
+                        [class.is-invalid]="entidadId?.invalid && entidadId?.touched">
+                        <option value="">Seleccione una entidad</option>
+                        <option *ngFor="let entidad of entidades" [value]="entidad.id">
+                          {{ entidad.nombre || `Entidad ${entidad.id}` }}
+                        </option>
+                      </select>
+                      <div class="invalid-feedback" *ngIf="entidadId?.invalid && entidadId?.touched">
+                        La entidad es requerida
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="distrito_id" class="form-label">
+                        Distrito Fiscal <span class="text-danger">*</span>
+                      </label>
+                      <select 
+                        class="form-select" 
+                        id="distrito_id" 
+                        formControlName="distrito_id"
+                        [class.is-invalid]="distritoId?.invalid && distritoId?.touched">
+                        <option value="">Seleccione un distrito fiscal</option>
+                        <option *ngFor="let distrito of distritos | slice:0" [value]="distrito.id" [hidden]="!distrito.estado">
+                          {{ distrito.nombre || `Distrito ${distrito.id}` }}
+                        </option>
+                      </select>
+                      <div class="invalid-feedback" *ngIf="distritoId?.invalid && distritoId?.touched">
+                        El distrito fiscal es requerido
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Información adicional del formulario -->
+                <div class="row" *ngIf="isEditMode">
+                  <div class="col-12">
+                    <div class="alert alert-info">
+                      <i class="bi bi-info-circle"></i>
+                      <strong>Modo edición:</strong> Está modificando la relación ID {{ entidadDistritoId }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Botones del formulario -->
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                  <button 
+                    type="button" 
+                    class="btn btn-secondary"
+                    (click)="onCancel()">
+                    <i class="bi bi-x-circle"></i> Cancelar
+                  </button>
+                  <button 
+                    *ngIf="isEditMode; else registrarBtn"
+                    type="button" 
+                    class="btn btn-warning"
+                    [disabled]="entidadDistritoForm.invalid"
+                    (click)="update()">
+                    <i class="bi bi-check-circle"></i> Actualizar
+                  </button>
+                  <ng-template #registrarBtn>
+                    <button 
+                      type="button" 
+                      class="btn btn-primary"
+                      [disabled]="entidadDistritoForm.invalid"
+                      (click)="save()">
+                      <i class="bi bi-check-circle"></i> Guardar
+                    </button>
+                  </ng-template>
+                </div>
+</form>
+            
+            <!-- Footer con información de ayuda -->
+            <div class="card-footer bg-light">
+              <small class="text-muted">
+                <i class="bi bi-lightbulb"></i>
+                <strong>Ayuda:</strong> Seleccione una entidad y un distrito fiscal para crear o actualizar la relación.
+              </small>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Modal de confirmación para navegación (opcional) -->
+<ng-container *ngIf="entidadDistritoForm.dirty && !entidadDistritoForm.pristine">
+  <!-- Se puede agregar un guard de navegación aquí si se desea -->
+</ng-container>
