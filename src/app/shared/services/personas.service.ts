@@ -8,7 +8,7 @@ import { PersonaRequest } from '../models/request/personas.request';
 @Injectable({ providedIn: 'root' })
 export class PersonasService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/personas'; 
+  private readonly apiUrl = '${environment.api.base}/personas'; 
 
   getPersonas(): Observable<PersonaResponse[]> {
     return this.httpClient.get<PersonaResponse[]>(this.apiUrl);

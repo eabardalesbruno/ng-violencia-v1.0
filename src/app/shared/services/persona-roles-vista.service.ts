@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PersonaRolesVistaService {
-  private apiUrl = 'http://localhost:8080/api/personas-roles-vista';
+  private apiUrl = '${environment.api.base}/api/personas-roles-vista';
 
   constructor(private http: HttpClient) {}
 

@@ -34,14 +34,14 @@ interface CasoDetail {
 export class RolesPersonService {
 
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/personas-roles-vista';
-  private readonly rolesPersonCasoUrl = 'http://localhost:8080/rolespersonacaso/filter/paging';
-  private readonly rolesPersonCasoBaseUrl = 'http://localhost:8080/rolespersonacaso';
+  private readonly apiUrl = '${environment.api.base}/api/personas-roles-vista';
+  private readonly rolesPersonCasoUrl = '${environment.api.base}/rolespersonacaso/filter/paging';
+  private readonly rolesPersonCasoBaseUrl = '${environment.api.base}/rolespersonacaso';
   
   // 🆕 URLs para los nuevos servicios
-  private readonly personasUrl = 'http://localhost:8080/personas';
-  private readonly rolesUrl = 'http://localhost:8080/roles';
-  private readonly casosUrl = 'http://localhost:8080/casos';
+  private readonly personasUrl = '${environment.api.base}/personas';
+  private readonly rolesUrl = '${environment.api.base}/roles';
+  private readonly casosUrl = '${environment.api.base}/casos';
 
   // 🔄 Métodos existentes
   getPersonasRolesByCasoId(casoId: number): Observable<any[]> {

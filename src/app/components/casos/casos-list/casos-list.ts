@@ -7,13 +7,14 @@ import { DelitoService } from '../../../shared/services/delito.service';
 import { PersonaRolesVistaService } from '../../../shared/services/persona-roles-vista.service';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { HasRole } from '../../../shared/directives/has-role';
 
 
 @Component({
   selector: 'app-casos-list',
   standalone: true,
   providers: [],
-  imports: [CommonModule, RouterLink, NgxDatatableModule, FormsModule  ],
+  imports: [CommonModule, RouterLink, NgxDatatableModule, FormsModule ,HasRole ],
    templateUrl: './casos-list.html',
   styleUrls: ['./casos-list.scss']
 })

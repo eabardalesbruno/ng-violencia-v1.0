@@ -1,0 +1,70 @@
+<div class="login-box">
+  <div class="card card-outline card-primary">
+    <div class="card-header">
+      <a class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover" href="/dist/pages/index2">
+        <h1 class="mb-0"><b>DELITOS</b>INFORMES</h1>
+      </a>
+    </div>
+
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">Ingrese sus credenciales de acceso</p>
+      <form [formGroup]="loginForm" class="need-validation">
+        <div class="input-group mb-1">
+          <div class="form-floating">
+            <input id="usuario" 
+                    type="text" 
+                    class="form-control"
+                    [formControl]="usuario"
+                    [ngClass]="{'is-invalid': submitted && usuario.errors}"
+                    placeholder="">
+              <label for="usuario">Usuario</label>
+          </div>
+          <div class="input-group-text" [ngClass]="{'is-invalid': submitted && usuario.errors}">
+            <span class="bi bi-envelope"></span>
+          </div>
+          @if (usuario.errors) {
+            <div class="invalid-feedback">
+              @if (usuario.hasError('required')) {
+                Nombre de usuario obligatorio.
+              }
+            </div>
+          }
+        </div>
+        
+        <div class="input-group mb-1">
+          <div class="form-floating">
+            <input id="contrasena" 
+                    type="password" 
+                    [formControl]="contrasena"
+                    [ngClass]="{'is-invalid': submitted && contrasena.errors}"
+                    class="form-control"
+                    placeholder="">
+              <label for="contrasena">Contrase&ntilde;a</label>
+          </div>
+          <div class="input-group-text" [ngClass]="{'is-invalid': submitted && contrasena.errors}">
+            <span class="bi bi-lock-fill"></span>
+          </div>
+          @if (contrasena.errors) {
+            <div class="invalid-feedback">
+              @if (contrasena.hasError('required')) {
+                Contrase&ntilde;a obligatoria.
+              }
+            </div>
+          }
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-8 d-inline-flex align-items-center"></div>
+          <div class="col-4">
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-success" (click)="login()">Ingresar</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

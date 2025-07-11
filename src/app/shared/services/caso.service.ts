@@ -8,7 +8,7 @@ import { CasoCompletoResponse } from '../models/response/insertarcaso.response';
 @Injectable({ providedIn: 'root' })
 export class CasoService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/casos';
+  private readonly apiUrl = '${environment.api.base}/casos';
 
   // Obtiene casos paginados y filtrados
   getCasosByPage(
@@ -43,22 +43,22 @@ export class CasoService {
 
   // Inserta un nuevo caso
   insertarCaso(caso: CasoCompletoRequest): Observable<CasoCompletoResponse> {
-    return this.httpClient.post<CasoCompletoResponse>('http://localhost:8080/api/casos/insertar', caso);
+    return this.httpClient.post<CasoCompletoResponse>('${environment.api.base}/api/casos/insertar', caso);
   }
 
   // Obtiene todas las entidades distrito
   getEntidadesDistrito(): Observable<any[]> {
-    return this.httpClient.get<any[]>('http://localhost:8080/entidadesdistrito');
+    return this.httpClient.get<any[]>('${environment.api.base}/entidadesdistrito');
   }
 
   // Obtiene todos los delitos
   getDelitos(): Observable<any[]> {
-    return this.httpClient.get<any[]>('http://localhost:8080/delitos');
+    return this.httpClient.get<any[]>('${environment.api.base}/delitos');
   }
 
   // Obtiene todos los roles
   getRoles(): Observable<any[]> {
-    return this.httpClient.get<any[]>('http://localhost:8080/roles');
+    return this.httpClient.get<any[]>('${environment.api.base}/roles');
   }
 
   // ACTUALIZA ESTADO DE UN CASO

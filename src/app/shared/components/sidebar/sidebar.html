@@ -39,7 +39,7 @@
             </li>
 
             <!-- Entidades y Distritos -->
-            <li class="nav-item has-treeview" [ngClass]="{ 'menu-open': openEntidadDistrito }">
+            <li class="nav-item has-treeview"*appHasRole="'ENTIDADES_LISTAR'"  [ngClass]="{ 'menu-open': openEntidadDistrito }">
                 <a class="nav-link" (click)="openEntidadDistrito = !openEntidadDistrito">
                     <i class="nav-icon bi bi-building"></i>
                     <p>
@@ -66,7 +66,7 @@
             </li>
 
             <!-- Personas -->
-            <li class="nav-item has-treeview" [ngClass]="{ 'menu-open': openPersonas }">
+            <li class="nav-item has-treeview" *appHasRole="'VICTIMAS_LISTAR'" [ngClass]="{ 'menu-open': openPersonas }">
                 <a class="nav-link" (click)="openPersonas = !openPersonas">
                     <i class="nav-icon bi bi-person-badge-fill"></i>
                     <p>
@@ -93,7 +93,7 @@
             </li>
 
             <!-- Casos -->
-            <li class="nav-item">
+            <li class="nav-item" *appHasRole="'CASOS_LISTAR'">
                 <a class="nav-link" [routerLink]="['casos']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <i class="nav-icon bi bi-box"></i>
                     <p>Casos</p>

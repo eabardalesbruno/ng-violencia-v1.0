@@ -1,25 +1,77 @@
-// casos-register.scss
+// casos-register.scss - Enhanced Modern Design
 // Variables
 $primary-color: #2563eb;
+$primary-light: #3b82f6;
+$primary-dark: #1d4ed8;
 $secondary-color: #f3f4f6;
+$secondary-light: #f9fafb;
+$secondary-dark: #e5e7eb;
 $success-color: #10b981;
+$success-light: #34d399;
+$success-dark: #059669;
 $error-color: #ef4444;
-$warning-color: #f59e0b;
+$error-light: #f87171;
+$error-dark: #dc2626;
+$warning-color: #160330;
+$warning-light: #0b1435;
+$info-color: #06b6d4;
+$info-light: #22d3ee;
 $text-primary: #1f2937;
 $text-secondary: #6b7280;
+$text-light: #9ca3af;
 $border-color: #e5e7eb;
+$border-light: #f3f4f6;
 $hover-color: #f9fafb;
-$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$focus-color: rgba(37, 99, 235, 0.1);
+$disabled-color: #d1d5db;
+
+// Vibrant colors for animations
+$vibrant-blue: #3b82f6;
+$vibrant-purple: #8b5cf6;
+$vibrant-pink: #ec4899;
+$vibrant-cyan: #06b6d4;
+$vibrant-green: #aeb910;
+$vibrant-yellow: #f59e0b;
+$vibrant-orange: #f97316;
+
+// Neon colors for special effects
+$neon-blue: #00d4ff;
+$neon-pink: #ff0080;
+$neon-green: #00ff80;
+$electric-purple: #b4ce21;
+
+// Enhanced shadows
+$shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 $shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 $shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$border-radius: 8px;
-$transition: all 0.3s ease;
+$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+$shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 
-// Mixins
+// Enhanced border radius
+$border-radius-sm: 4px;
+$border-radius: 8px;
+$border-radius-md: 12px;
+$border-radius-lg: 16px;
+$border-radius-xl: 24px;
+$border-radius-full: 9999px;
+
+// Transitions
+$transition-fast: all 0.15s ease;
+$transition: all 0.3s ease;
+$transition-slow: all 0.5s ease;
+
+// Enhanced Mixins
 @mixin flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @mixin card-base {
@@ -28,58 +80,160 @@ $transition: all 0.3s ease;
   box-shadow: $shadow-sm;
   border: 1px solid $border-color;
   transition: $transition;
+  position: relative;
+  overflow: hidden;
+}
+
+@mixin card-hover {
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+  }
 }
 
 @mixin button-base {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 12px 20px;
   border: none;
   border-radius: $border-radius;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 14px;
   cursor: pointer;
   transition: $transition;
   text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px $focus-color;
+  }
   
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  // Ripple effect
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: width 0.6s, height 0.6s;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  
+  &:active::before {
+    width: 300px;
+    height: 300px;
   }
 }
 
-// Contenedor principal
-.casos-register-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+@mixin input-base {
+  padding: 14px 16px;
+  border: 2px solid $border-color;
+  border-radius: $border-radius;
+  font-size: 14px;
+  transition: $transition;
+  background: white;
+  
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 3px $focus-color;
+  }
+  
+  &:invalid {
+    border-color: $error-color;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+  
+  &:disabled {
+    background: $secondary-light;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
 }
 
-// Header con progreso
+@mixin gradient-bg($from, $to) {
+  background: linear-gradient(135deg, $from 0%, $to 100%);
+}
+
+// Contenedor principal mejorado
+.casos-register-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: 100vh;
+  @include gradient-bg(#f8fafc, #e2e8f0);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+// Header con progreso mejorado
 .header-section {
-  margin-bottom: 32px;
+  margin-bottom: 40px;
   
   .progress-container {
-    background: white;
-    border-radius: $border-radius;
-    padding: 24px;
-    box-shadow: $shadow-md;
-    margin-bottom: 24px;
+    @include card-base;
+    padding: 32px;
+    @include gradient-bg(white, #fafbff);
+    border: 1px solid rgba(37, 99, 235, 0.1);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      @include gradient-bg($primary-color, $primary-light);
+    }
   }
   
   .progress-bar {
-    height: 6px;
+    height: 8px;
     background: $secondary-color;
-    border-radius: 3px;
+    border-radius: $border-radius-sm;
     overflow: hidden;
-    margin-bottom: 24px;
+    margin-bottom: 32px;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%);
+      animation: shimmer 2s infinite;
+    }
     
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, $primary-color 0%, #3b82f6 100%);
-      transition: width 0.5s ease;
+      @include gradient-bg($primary-color, $primary-light);
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 20px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 100%);
+      }
     }
   }
   
@@ -87,54 +241,91 @@ $transition: all 0.3s ease;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    
+    // Connecting line
+    &::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: $border-color;
+      z-index: 0;
+    }
     
     .step-indicator {
       @include flex-center;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
       cursor: pointer;
       transition: $transition;
+      position: relative;
+      z-index: 1;
       
       .step-number {
         @include flex-center;
-        width: 40px;
-        height: 40px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        background: $secondary-color;
+        background: white;
         color: $text-secondary;
-        font-weight: 600;
+        font-weight: 700;
+        font-size: 16px;
         transition: $transition;
+        border: 3px solid $border-color;
+        box-shadow: $shadow-sm;
       }
       
       .step-label {
         font-size: 14px;
         color: $text-secondary;
-        font-weight: 500;
+        font-weight: 600;
+        text-align: center;
+        transition: $transition;
       }
       
       &.active {
         .step-number {
-          background: $primary-color;
+          @include gradient-bg($primary-color, $primary-light);
           color: white;
+          border-color: $primary-color;
+          box-shadow: $shadow-md, 0 0 0 4px rgba(37, 99, 235, 0.15);
+          transform: scale(1.1);
         }
         .step-label {
           color: $primary-color;
+          font-weight: 700;
         }
       }
       
       &.completed {
         .step-number {
-          background: $success-color;
+          @include gradient-bg($success-color, $success-light);
           color: white;
+          border-color: $success-color;
+          box-shadow: $shadow-md;
+          
+          &::before {
+            content: '✓';
+            font-weight: 900;
+          }
         }
         .step-label {
           color: $success-color;
+          font-weight: 600;
         }
       }
       
       &:hover:not(.active):not(.completed) {
         .step-number {
-          background: #e5e7eb;
+          background: $hover-color;
+          border-color: $secondary-dark;
+          transform: scale(1.05);
+        }
+        .step-label {
+          color: $text-primary;
         }
       }
     }
@@ -142,18 +333,24 @@ $transition: all 0.3s ease;
   
   .step-title {
     text-align: center;
+    margin-top: 32px;
     
     h1 {
-      font-size: 32px;
-      font-weight: 700;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
       color: $text-primary;
-      margin: 0 0 8px 0;
+      margin: 0 0 12px 0;
+      background: linear-gradient(135deg, $text-primary 0%, $primary-color 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     
     .step-description {
       color: $text-secondary;
-      font-size: 16px;
+      font-size: 18px;
       margin: 0;
+      font-weight: 500;
     }
   }
 }
@@ -190,824 +387,1413 @@ $transition: all 0.3s ease;
   }
 }
 
-// Contenido de pasos
+// Contenido de pasos mejorado
 .step-content {
-  background: white;
-  border-radius: $border-radius;
-  box-shadow: $shadow-md;
-  padding: 32px;
-  min-height: 500px;
-}
-
-// Búsqueda
-.search-container {
-  margin-bottom: 24px;
+  @include card-base;
+  padding: 40px;
+  min-height: 600px;
+  @include gradient-bg(white, #fefeff);
+  border: 1px solid rgba(37, 99, 235, 0.08);
   
-  .search-box {
-    position: relative;
-    max-width: 500px;
-    margin: 0 auto;
-    
-    .icon-search {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: $text-secondary;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    @include gradient-bg($primary-color, $primary-light);
+    opacity: 0.3;
+  }
+  
+  &.distritos-section {
+    margin-top: 32px;
+    padding: 24px;
+    @include card-base;
+    @include gradient-bg($secondary-light, $secondary-color);
+
+    .distritos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+
+      .clear-button {
+        @include button-base;
+        background: $error-color;
+        color: white;
+
+        &:hover {
+          background: $error-dark;
+        }
+      }
     }
-    
-    .search-input {
-      width: 100%;
-      padding: 12px 16px 12px 48px;
-      border: 2px solid $border-color;
-      border-radius: $border-radius;
-      font-size: 16px;
-      transition: $transition;
-      
-      &:focus {
-        outline: none;
-        border-color: $primary-color;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+
+    .distritos-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+
+      .district-card {
+        @include card-base;
+        @include card-hover;
+        padding: 16px;
+        text-align: center;
+
+        .district-id {
+          font-size: 14px;
+          font-weight: 600;
+          color: $text-secondary;
+          margin-bottom: 8px;
+        }
+
+        .district-name {
+          font-size: 16px;
+          font-weight: 700;
+          color: $text-primary;
+        }
+
+        .select-button {
+          @include button-base;
+          background: $success-color;
+          color: white;
+          margin-top: 12px;
+
+          &:hover {
+            background: $success-dark;
+          }
+        }
+
+        .deselect-button {
+          @include button-base;
+          background: $warning-color;
+          color: white;
+          margin-top: 12px;
+
+          &:hover {
+            background: $warning-light;
+          }
+        }
       }
     }
   }
-  
-  .selected-count {
-    @include flex-center;
-    justify-content: space-between;
-    margin-top: 16px;
-    padding: 12px 16px;
-    background: #f0f9ff;
-    border: 1px solid #bae6fd;
-    border-radius: $border-radius;
-    
-    .btn-clear {
-      @include button-base;
-      background: transparent;
-      color: $primary-color;
-      padding: 4px 8px;
-      font-size: 14px;
-      
-      &:hover {
-        background: rgba(37, 99, 235, 0.1);
+
+  // Nueva sección para Delitos y Personas
+  delitos-section {
+    margin-top: 32px;
+    padding: 24px;
+    @include card-base;
+    @include gradient-bg($secondary-light, $secondary-color);
+
+    .delitos-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+
+      .clear-button {
+        @include button-base;
+        background: $error-color;
+        color: white;
+
+        &:hover {
+          background: $error-dark;
+        }
+      }
+    }
+
+    .delitos-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+
+      .delito-card {
+        @include card-base;
+        @include card-hover;
+        padding: 16px;
+        text-align: center;
+
+        .delito-id {
+          font-size: 14px;
+          font-weight: 600;
+          color: $text-secondary;
+          margin-bottom: 8px;
+        }
+
+        .delito-name {
+          font-size: 16px;
+          font-weight: 700;
+          color: $text-primary;
+        }
+
+        .select-button {
+          @include button-base;
+          background: $success-color;
+          color: rgb(9, 19, 110);
+          margin-top: 12px;
+
+          &:hover {
+            background: $success-dark;
+          }
+        }
+
+        .deselect-button {
+          @include button-base;
+          background: $warning-color;
+          color: rgb(18, 17, 112);
+          margin-top: 12px;
+
+          &:hover {
+            background: $warning-light;
+          }
+        }
       }
     }
   }
 }
 
-// Grilla de tarjetas
+// Grilla de tarjetas mejorada con animaciones
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+  
+  // Animación de aparición escalonada para las tarjetas
+  .district-card {
+    opacity: 0;
+    animation: slideInFromBottom 0.6s ease-out forwards;
+    
+    &:nth-child(1) { animation-delay: 0.1s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.3s; }
+    &:nth-child(4) { animation-delay: 0.4s; }
+    &:nth-child(5) { animation-delay: 0.5s; }
+    &:nth-child(6) { animation-delay: 0.6s; }
+    &:nth-child(7) { animation-delay: 0.7s; }
+    &:nth-child(8) { animation-delay: 0.8s; }
+    &:nth-child(9) { animation-delay: 0.9s; }
+    &:nth-child(n+10) { animation-delay: 1s; }
+  }
 }
 
-// Tarjetas de distrito
+// Tarjetas de distrito con efectos coloridos y animaciones
 .district-card {
   @include card-base;
-  padding: 20px;
+  padding: 24px;
   cursor: pointer;
+  border-radius: $border-radius-md;
   position: relative;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-lg;
+  // Gradiente de borde animado
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+      $vibrant-blue, $vibrant-purple, $vibrant-pink, 
+      $vibrant-cyan, $vibrant-green, $vibrant-yellow, $vibrant-orange
+    );
+    background-size: 400% 400%;
+    border-radius: $border-radius-md;
+    z-index: -1;
+    opacity: 0;
+    animation: gradientShift 3s ease infinite;
+    transition: opacity 0.3s ease;
   }
   
-  &.selected {
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  // Efecto de partículas flotantes
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 20% 30%, $neon-blue 2px, transparent 2px),
+      radial-gradient(circle at 70% 20%, $neon-pink 1px, transparent 1px),
+      radial-gradient(circle at 80% 80%, $neon-green 1.5px, transparent 1.5px),
+      radial-gradient(circle at 30% 70%, $electric-purple 1px, transparent 1px);
+    background-size: 50px 50px, 30px 30px, 40px 40px, 60px 60px;
+    border-radius: $border-radius-md;
+    opacity: 0;
+    animation: floatingParticles 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  // Efectos de hover vibrantes
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+      $shadow-xl,
+      0 0 30px rgba($vibrant-blue, 0.3),
+      0 0 60px rgba($vibrant-purple, 0.2);
+    
+    &::before {
+      opacity: 1;
+    }
+    
+    &::after {
+      opacity: 0.6;
+    }
     
     .card-header h3 {
-      color: $primary-color;
+      color: $vibrant-purple;
+      text-shadow: 0 0 10px rgba($vibrant-purple, 0.5);
+      animation: textGlow 1s ease-in-out infinite alternate;
+    }
+    
+    .district-code {
+      background: linear-gradient(45deg, $vibrant-pink, $vibrant-cyan);
+      color: white;
+      animation: bounce 0.6s ease;
+    }
+  }
+  
+  // Estado seleccionado con efectos espectaculares
+  &.selected {
+    border-color: transparent;
+    box-shadow: 
+      $shadow-xl,
+      0 0 40px rgba($vibrant-green, 0.4),
+      0 0 80px rgba($vibrant-blue, 0.3),
+      inset 0 0 20px rgba($vibrant-purple, 0.1);
+    background: linear-gradient(135deg, 
+      rgba($vibrant-blue, 0.05) 0%, 
+      rgba($vibrant-purple, 0.05) 50%, 
+      rgba($vibrant-pink, 0.05) 100%
+    );
+    animation: selectedPulse 2s ease-in-out infinite;
+    
+    &::before {
+      opacity: 1;
+      animation: gradientShift 2s ease infinite, rotateBorder 10s linear infinite;
+    }
+    
+    &::after {
+      opacity: 0.8;
+      animation: floatingParticles 3s ease-in-out infinite, sparkle 1.5s ease-in-out infinite;
+    }
+    
+    .card-header h3 {
+      background: linear-gradient(45deg, $vibrant-blue, $vibrant-purple, $vibrant-pink);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: rainbowText 3s ease-in-out infinite;
+    }
+    
+    .district-code {
+      background: linear-gradient(45deg, $vibrant-green, $vibrant-cyan);
+      color: white;
+      box-shadow: 0 0 15px rgba($vibrant-green, 0.6);
+      animation: glowPulse 1.5s ease-in-out infinite;
+    }
+  }
+  
+  // Efecto de clic con ondas
+  &:active {
+    transform: translateY(-4px) scale(0.98);
+    
+    &::before {
+      animation: clickWave 0.6s ease-out;
     }
   }
   
   .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
+    @include flex-between;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
     
     h3 {
       margin: 0;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 700;
       color: $text-primary;
+      transition: all 0.3s ease;
+      position: relative;
     }
     
     .district-code {
       background: $secondary-color;
       color: $text-secondary;
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 8px 16px;
+      border-radius: $border-radius-full;
       font-size: 12px;
-      font-weight: 500;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmerCode 2s ease-in-out infinite;
+      }
     }
   }
   
   .card-body {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
     
     p {
       margin: 0;
       color: $text-secondary;
-      line-height: 1.5;
+      line-height: 1.6;
+      font-size: 15px;
+      transition: color 0.3s ease;
     }
   }
   
   .card-footer {
+    position: relative;
+    z-index: 2;
+    
     .select-indicator {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: $success-color;
-      font-weight: 500;
+      color: $vibrant-green;
+      font-weight: 700;
       font-size: 14px;
-    }
-  }
-}
-
-// Tarjetas de delitos
-.crime-card {
-  @include card-base;
-  padding: 20px;
-  cursor: pointer;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: $shadow-lg;
-  }
-  
-  &.selected {
-    border-color: $primary-color;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
-    background: #f8faff;
-  }
-  
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 12px;
-    
-    h3 {
-      margin: 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: $text-primary;
-      flex: 1;
-    }
-    
-    .checkbox-indicator {
-      margin-left: 12px;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: slideUpFade 0.5s ease-out 0.3s forwards;
       
-      input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-      }
-    }
-  }
-  
-  .card-body {
-    p {
-      margin: 0;
-      color: $text-secondary;
-      line-height: 1.5;
-      font-size: 14px;
-    }
-  }
-}
-
-// Delitos seleccionados
-.selected-crimes {
-  margin-top: 24px;
-  padding: 20px;
-  background: #f8faff;
-  border-radius: $border-radius;
-  border: 1px solid #e1e8ff;
-  
-  h3 {
-    margin: 0 0 16px 0;
-    font-size: 18px;
-    color: $text-primary;
-  }
-  
-  .selected-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    
-    .selected-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: white;
-      padding: 8px 12px;
-      border-radius: 20px;
-      border: 1px solid $border-color;
-      
-      .btn-remove {
-        @include button-base;
-        background: transparent;
-        color: $error-color;
-        padding: 2px;
-        font-size: 12px;
-        
-        &:hover {
-          background: rgba(239, 68, 68, 0.1);
-        }
-      }
-    }
-  }
-}
-
-// Sección de personas
-.personas-section {
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    
-    h3 {
-      margin: 0;
-      font-size: 24px;
-      color: $text-primary;
-    }
-    
-    .btn-add {
-      @include button-base;
-      background: $primary-color;
-      color: white;
-      
-      &:hover {
-        background: #1d4ed8;
-      }
-    }
-  }
-  
-  .personas-list {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-  
-  .persona-card {
-    @include card-base;
-    padding: 24px;
-    
-    .persona-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      
-      h4 {
-        margin: 0;
-        font-size: 18px;
-        color: $text-primary;
-      }
-      
-      .btn-remove-person {
-        @include button-base;
-        background: transparent;
-        color: $error-color;
-        padding: 8px;
-        
-        &:hover {
-          background: rgba(239, 68, 68, 0.1);
-        }
-      }
-    }
-    
-    .persona-form {
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-bottom: 16px;
-        
-        @media (max-width: 768px) {
-          grid-template-columns: 1fr;
-        }
-      }
-      
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        
-        label {
-          font-weight: 500;
-          color: $text-primary;
-          font-size: 14px;
-        }
-        
-        .form-control {
-          padding: 12px;
-          border: 1px solid $border-color;
-          border-radius: $border-radius;
-          font-size: 14px;
-          transition: $transition;
-          
-          &:focus {
-            outline: none;
-            border-color: $primary-color;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-          }
-        }
-      }
-    }
-  }
-}
-
-// Roles grid
-.roles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 12px;
-  margin-top: 8px;
-  
-  .role-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border: 1px solid $border-color;
-    border-radius: $border-radius;
-    cursor: pointer;
-    transition: $transition;
-    
-    &:hover {
-      background: $hover-color;
-    }
-    
-    &.selected {
-      border-color: $primary-color;
-      background: #f8faff;
-    }
-    
-    .role-checkbox {
-      input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-      }
-    }
-    
-    .role-info {
-      flex: 1;
-      
-      .role-name {
-        display: block;
-        font-weight: 500;
-        color: $text-primary;
-        margin-bottom: 4px;
-      }
-      
-      .role-desc {
-        display: block;
-        font-size: 12px;
-        color: $text-secondary;
-        line-height: 1.4;
-      }
-    }
-  }
-}
-
-// Sección de confirmación
-.confirmation-section {
-  h3 {
-    margin: 0 0 24px 0;
-    font-size: 24px;
-    color: $text-primary;
-    text-align: center;
-  }
-  
-  .summary-card {
-    @include card-base;
-    padding: 24px;
-    margin-bottom: 24px;
-    
-    .summary-item {
-      margin-bottom: 24px;
-      
-      &:last-child {
-        margin-bottom: 0;
-      }
-      
-      h4 {
-        margin: 0 0 12px 0;
-        font-size: 18px;
-        color: $text-primary;
-        border-bottom: 2px solid $border-color;
-        padding-bottom: 8px;
-      }
-      
-      > p {
-        margin: 0 0 8px 0;
-        font-size: 16px;
-        color: $text-primary;
-      }
-      
-      small {
-        color: $text-secondary;
-        font-size: 14px;
-      }
-    }
-    
-    .delitos-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      
-      .delito-tag {
-        background: $primary-color;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 14px;
-        font-weight: 500;
-      }
-    }
-    
-    .personas-summary {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      
-      .persona-summary {
-        @include card-base;
-        padding: 16px;
-        background: #f8faff;
-        
-        .persona-info {
-          margin-bottom: 12px;
-          
-          h5 {
-            margin: 0 0 8px 0;
-            font-size: 16px;
-            color: $text-primary;
-          }
-          
-          p {
-            margin: 0 0 4px 0;
-            font-size: 14px;
-            color: $text-secondary;
-          }
-        }
-        
-        .persona-roles {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
-          
-          .role-tag {
-            background: $success-color;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 500;
-          }
-        }
-      }
-    }
-  }
-  
-  .confirmation-actions {
-    text-align: center;
-    
-    .btn-register {
-      @include button-base;
-      background: $success-color;
-      color: white;
-      padding: 16px 32px;
-      font-size: 18px;
-      font-weight: 600;
-      border-radius: 12px;
-      min-width: 200px;
-      
-      &:hover:not(:disabled) {
-        background: #059669;
-        transform: translateY(-2px);
-        box-shadow: $shadow-lg;
-      }
-      
-      .spinner-small {
-        width: 16px;
-        height: 16px;
-        border: 2px solid transparent;
-        border-top: 2px solid currentColor;
+      &::before {
+        content: '✓';
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-    }
-  }
-}
-
-// Navegación
-.navigation-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 20px 32px;
-  border-radius: $border-radius;
-  box-shadow: $shadow-md;
-  
-  .btn-nav {
-    @include button-base;
-    padding: 12px 24px;
-    font-size: 16px;
-    
-    &.btn-prev {
-      background: $secondary-color;
-      color: $text-primary;
-      
-      &:hover:not(:disabled) {
-        background: #e5e7eb;
-      }
-    }
-    
-    &.btn-next {
-      background: $primary-color;
-      color: white;
-      
-      &:hover:not(:disabled) {
-        background: #1d4ed8;
-      }
-    }
-  }
-}
-
-// Modal
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  @include flex-center;
-  z-index: 1000;
-  padding: 20px;
-  animation: fadeIn 0.3s ease;
-  
-  .modal-content {
-    background: white;
-    border-radius: 12px;
-    box-shadow: $shadow-lg;
-    max-width: 500px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    animation: slideIn 0.3s ease;
-    
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 24px 0 24px;
-      
-      h3 {
-        margin: 0;
-        font-size: 20px;
-        color: $text-primary;
-      }
-      
-      .btn-close {
-        @include button-base;
-        background: transparent;
-        color: $text-secondary;
-        padding: 8px;
-        
-        &:hover {
-          background: $hover-color;
-        }
-      }
-    }
-    
-    .modal-body {
-      padding: 24px;
-      text-align: center;
-      
-      .success-icon {
-        margin-bottom: 20px;
-        
-        .icon-check-circle {
-          font-size: 64px;
-          color: $success-color;
-        }
-      }
-      
-      .case-details {
-        @include card-base;
-        padding: 20px;
-        text-align: left;
-        
-        h4 {
-          margin: 0 0 16px 0;
-          font-size: 18px;
-          color: $text-primary;
-          text-align: center;
-        }
-        
-        .detail-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 8px 0;
-          border-bottom: 1px solid $border-color;
-          
-          &:last-child {
-            border-bottom: none;
-          }
-          
-          .label {
-            font-weight: 500;
-            color: $text-secondary;
-          }
-          
-          .value {
-            font-weight: 600;
-            color: $text-primary;
-          }
-        }
-      }
-    }
-    
-    .modal-actions {
-      display: flex;
-      gap: 12px;
-      padding: 0 24px 24px 24px;
-      
-      .btn-secondary {
-        @include button-base;
-        background: $secondary-color;
-        color: $text-primary;
-        flex: 1;
-        justify-content: center;
-        
-        &:hover {
-          background: #e5e7eb;
-        }
-      }
-      
-      .btn-primary {
-        @include button-base;
-        background: $primary-color;
+        background: linear-gradient(45deg, $vibrant-green, $vibrant-cyan);
         color: white;
-        flex: 1;
+        display: flex;
+        align-items: center;
         justify-content: center;
+        font-size: 14px;
+        font-weight: 900;
+        box-shadow: 
+          0 4px 15px rgba($vibrant-green, 0.4),
+          0 0 20px rgba($vibrant-green, 0.3);
+        animation: checkmarkBounce 0.6s ease-out, checkmarkGlow 2s ease-in-out infinite;
+      }
+    }
+  }
+}
+
+// Búsqueda con efectos coloridos
+.search-container {
+  margin-bottom: 32px;
+  animation: fadeInDown 0.8s ease-out;
+  
+  .search-box {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, $vibrant-blue, $vibrant-purple, $vibrant-pink);
+      background-size: 300% 300%;
+      border-radius: $border-radius-md;
+      z-index: -1;
+      opacity: 0;
+      animation: gradientShift 3s ease infinite;
+      transition: opacity 0.3s ease;
+    }
+    
+    &:focus-within::before {
+      opacity: 1;
+    }
+    
+    .icon-search {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-light;
+      font-size: 20px;
+      z-index: 2;
+      transition: all 0.3s ease;
+      animation: searchPulse 2s ease-in-out infinite;
+    }
+    
+    .search-input {
+      @include input-base;
+      width: 100%;
+      padding: 18px 20px 18px 60px;
+      font-size: 16px;
+      border-radius: $border-radius-md;
+      box-shadow: $shadow-sm;
+      border: 2px solid transparent;
+      background: white;
+      position: relative;
+      z-index: 1;
+      
+      &::placeholder {
+        color: $text-light;
+        font-weight: 400;
+      }
+      
+      &:focus {
+        box-shadow: 
+          $shadow-lg, 
+          0 0 25px rgba($vibrant-blue, 0.3),
+          0 0 50px rgba($vibrant-purple, 0.2);
+        border-color: transparent;
         
-        &:hover {
-          background: #1d4ed8;
+        ~ .icon-search {
+          color: $vibrant-blue;
+          animation: searchActive 0.5s ease-out;
         }
       }
     }
   }
 }
 
-// Loading spinner
-.loading-spinner {
-  @include flex-center;
-  flex-direction: column;
-  gap: 16px;
-  padding: 60px 20px;
-  
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid $secondary-color;
-    border-top: 4px solid $primary-color;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+// Nuevas animaciones para el distrito
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) rotateX(15deg);
   }
-  
-  p {
-    margin: 0;
-    color: $text-secondary;
-    font-size: 16px;
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
   }
 }
 
-// Iconos (usando Font Awesome o similares)
-.icon-search::before { content: '🔍'; }
-.icon-clear::before { content: '✕'; }
-.icon-check::before { content: '✓'; }
-.icon-close::before { content: '✕'; }
-.icon-add::before { content: '+'; }
-.icon-trash::before { content: '🗑'; }
-.icon-save::before { content: '💾'; }
-.icon-arrow-left::before { content: '←'; }
-.icon-arrow-right::before { content: '→'; }
-.icon-check-circle::before { content: '✅'; }
-.icon-error::before { content: '❌'; }
-.icon-success::before { content: '✅'; }
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 
-// Animaciones
-@keyframes spin {
+@keyframes floatingParticles {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translateY(-10px) rotate(90deg);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-5px) rotate(180deg);
+    opacity: 1;
+  }
+  75% { 
+    transform: translateY(-15px) rotate(270deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes textGlow {
+  0% { text-shadow: 0 0 10px rgba($vibrant-purple, 0.5); }
+  100% { text-shadow: 0 0 20px rgba($vibrant-purple, 0.8), 0 0 30px rgba($vibrant-blue, 0.5); }
+}
+
+@keyframes selectedPulse {
+  0%, 100% { 
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+      $shadow-xl,
+      0 0 40px rgba($vibrant-green, 0.4),
+      0 0 80px rgba($vibrant-blue, 0.3);
+  }
+  50% { 
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 
+      $shadow-2xl,
+      0 0 60px rgba($vibrant-green, 0.6),
+      0 0 120px rgba($vibrant-blue, 0.4);
+  }
+}
+
+@keyframes rotateBorder {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes sparkle {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
-@keyframes slideIn {
-  from { 
-    opacity: 0;
-    transform: translateY(-50px);
+@keyframes rainbowText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { 
+    box-shadow: 0 0 15px rgba($vibrant-green, 0.6);
+    transform: scale(1);
   }
-  to { 
+  50% { 
+    box-shadow: 0 0 25px rgba($vibrant-green, 0.8), 0 0 35px rgba($vibrant-cyan, 0.5);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes clickWave {
+  0% {
+    box-shadow: 0 0 0 0 rgba($vibrant-blue, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 40px rgba($vibrant-blue, 0);
+  }
+}
+
+@keyframes shimmerCode {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-// Responsive design
-@media (max-width: 768px) {
-  .casos-register-container {
-    padding: 12px;
+@keyframes checkmarkBounce {
+  0%, 20%, 53%, 80%, 100% { transform: scale(1); }
+  40%, 43% { transform: scale(1.2); }
+  70% { transform: scale(1.1); }
+}
+
+@keyframes checkmarkGlow {
+  0%, 100% { 
+    box-shadow: 
+      0 4px 15px rgba($vibrant-green, 0.4),
+      0 0 20px rgba($vibrant-green, 0.3);
   }
-  
+  50% { 
+    box-shadow: 
+      0 4px 25px rgba($vibrant-green, 0.6),
+      0 0 40px rgba($vibrant-green, 0.5),
+      0 0 60px rgba($vibrant-cyan, 0.3);
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes searchPulse {
+  0%, 100% { 
+    transform: translateY(-50%) scale(1);
+    color: $text-light;
+  }
+  50% { 
+    transform: translateY(-50%) scale(1.1);
+    color: $vibrant-blue;
+  }
+}
+
+@keyframes searchActive {
+  0% { transform: translateY(-50%) scale(1) rotate(0deg); }
+  50% { transform: translateY(-50%) scale(1.2) rotate(180deg); }
+  100% { transform: translateY(-50%) scale(1) rotate(360deg); }
+}
+
+// Efectos especiales para cuando el step 1 está activo
+.casos-register-container[data-step="1"] {
   .step-content {
-    padding: 20px;
+    animation: contentSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    &::before {
+      background: linear-gradient(90deg, $vibrant-blue, $vibrant-purple, $vibrant-pink);
+      opacity: 0.6;
+      animation: topBorderGlow 3s ease-in-out infinite;
+    }
   }
-  
-  .cards-grid {
-    grid-template-columns: 1fr;
+}
+
+@keyframes contentSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
   }
-  
-  .step-indicators {
-    .step-indicator {
-      .step-label {
-        font-size: 12px;
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes topBorderGlow {
+  0%, 100% { 
+    opacity: 0.6;
+    height: 1px;
+  }
+  50% { 
+    opacity: 1;
+    height: 3px;
+  }
+}
+
+// Nuevas variables para colores vibrantes
+$vibrant-purple: #8b5cf6;
+$vibrant-pink: #ec4899;
+$vibrant-cyan: #06d6a0;
+$vibrant-orange: #ff6b35;
+$vibrant-yellow: #ffd60a;
+$vibrant-green: #32d74b;
+$vibrant-blue: #007aff;
+$vibrant-red: #ff3b30;
+
+// Colores adicionales para animaciones
+$neon-blue: #00f5ff;
+$neon-pink: #ff10f0;
+$neon-green: #39ff14;
+$electric-purple: #91ff00;
+
+// Enhanced Styles for Delitos and Personas Sections
+
+// ===============================
+// DELITOS SECTION
+// ===============================
+
+.delitos-section {
+  margin-top: 32px;
+  padding: 24px;
+  @include card-base;
+  @include gradient-bg($secondary-light, $secondary-color);
+
+  .delitos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: $text-primary;
+    }
+
+    .clear-button {
+      @include button-base;
+      background: $error-color;
+      color: white;
+
+      &:hover {
+        background: $error-dark;
       }
     }
   }
-  
-  .header-section {
-    .step-title {
-      h1 {
-        font-size: 24px;
+
+  .delitos-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+
+    .delito-card {
+      @include card-base;
+      @include card-hover;
+      padding: 16px;
+      text-align: center;
+
+      .delito-id {
+        font-size: 14px;
+        font-weight: 600;
+        color: $text-secondary;
+        margin-bottom: 8px;
       }
-    }
-  }
-  
-  .navigation-section {
-    padding: 16px 20px;
-    
-    .btn-nav {
-      padding: 10px 16px;
-      font-size: 14px;
-    }
-  }
-  
-  .modal-overlay {
-    padding: 12px;
-    
-    .modal-content {
-      .modal-header,
-      .modal-body,
-      .modal-actions {
-        padding: 16px;
+
+      .delito-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: $text-primary;
+      }
+
+      .select-button {
+        @include button-base;
+        background: $success-color;
+        color: white;
+        margin-top: 12px;
+
+        &:hover {
+          background: $success-dark;
+        }
+      }
+
+      .deselect-button {
+        @include button-base;
+        background: $warning-color;
+        color: white;
+        margin-top: 12px;
+
+        &:hover {
+          background: $warning-light;
+        }
       }
     }
   }
 }
 
-@media (max-width: 480px) {
-  .step-indicators {
-    .step-indicator {
-      .step-number {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-      }
-      
-      .step-label {
-        font-size: 10px;
+// ===============================
+// PERSONAS SECTION
+// ===============================
+
+.personas-section {
+  @include flex-center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: linear-gradient(135deg, $vibrant-blue, $vibrant-green);
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-lg;
+  color: $text-light;
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 10px;
+  }
+
+  .person-card {
+    @include card-base;
+    @include card-hover;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background: linear-gradient(135deg, $vibrant-purple, $vibrant-pink);
+    color: $text-light;
+
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      color: $text-secondary;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+
+      button {
+        @include button-base;
+        background: $success-color;
+        color: white;
+
+        &:hover {
+          background: $success-dark;
+        }
       }
     }
   }
-  
-  .roles-grid {
-    grid-template-columns: 1fr;
+}
+
+// Styles for navigation buttons
+.navigation-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+
+  .btn-nav {
+    @include button-base;
+    background: $primary-color;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-md;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: $primary-dark;
+      box-shadow: $shadow-lg;
+    }
+
+    &:disabled {
+      background: $disabled-color;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    i {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    &.btn-prev {
+      background: $warning-color;
+
+      &:hover {
+        background: $warning-light;
+      }
+    }
+
+    &.btn-next {
+      background: $success-color;
+
+      &:hover {
+        background: $success-dark;
+      }
+    }
   }
-  
-  .modal-actions {
+}
+
+// Styles for 'Limpiar todo' and 'Seleccionar' buttons
+.btn-clear-all {
+  @include button-base;
+  background: $error-color;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $error-dark;
+    box-shadow: $shadow-md;
+  }
+
+  i {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+}
+
+.btn-action {
+  @include button-base;
+  background: $success-color;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: $success-dark;
+    box-shadow: $shadow-md;
+  }
+
+  &.selected {
+    background: $warning-color;
+
+    &:hover {
+      background: $warning-light;
+    }
+  }
+}
+
+// Status container styles
+.status-container {
+  margin-top: 16px;
+  padding: 16px;
+  background: $secondary-light;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  font-family: 'Inter', sans-serif;
+
+  .status-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  .status-details {
+    font-size: 14px;
+    color: $text-secondary;
+
+    p {
+      margin: 4px 0;
+
+      strong {
+        color: $text-primary;
+      }
+    }
+  }
+}
+
+// Sección para Agregar Personas
+.add-person-section {
+  margin-top: 32px;
+  padding: 24px;
+  background: $secondary-light;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  .add-person-header {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .add-person-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: $text-primary;
+      margin-bottom: 8px;
+    }
+
+    .add-person-subtitle {
+      font-size: 16px;
+      color: $text-secondary;
+      margin-bottom: 16px;
+    }
+
+    .btn-add-person {
+      @include button-base;
+      background: $success-color;
+      color: white;
+      font-size: 16px;
+      padding: 12px 24px;
+      border-radius: $border-radius-md;
+      box-shadow: $shadow-sm;
+
+      &:hover {
+        background: $success-dark;
+        box-shadow: $shadow-md;
+      }
+
+      i {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .personas-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+
+    .persona-card {
+      @include card-base;
+      padding: 16px;
+      background: white;
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .persona-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: $text-primary;
+        }
+
+        .btn-remove-person {
+          @include button-base;
+          background: $error-color;
+          color: white;
+          padding: 8px;
+          border-radius: $border-radius-sm;
+
+          &:hover {
+            background: $error-dark;
+          }
+
+          i {
+            font-size: 16px;
+          }
+        }
+      }
+
+      .card-body {
+        .form-section {
+          margin-bottom: 16px;
+
+          .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: $text-primary;
+            margin-bottom: 8px;
+          }
+        }
+      }
+
+      .card-footer {
+        text-align: center;
+        margin-top: 16px;
+
+        .persona-status {
+          font-size: 14px;
+          color: $text-secondary;
+
+          &.valid {
+            color: $success-color;
+          }
+
+          &.invalid {
+            color: $error-color;
+          }
+        }
+      }
+    }
+  }
+
+  // Estilos para los campos de formulario interactivos y la cuadrícula de roles
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .form-group {
+    display: flex;
     flex-direction: column;
-    
-    .btn-secondary,
-    .btn-primary {
-      width: 100%;
+    gap: 8px;
+
+    .form-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: $text-primary;
+    }
+
+    .form-input, .form-select {
+      padding: 12px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-md;
+      font-size: 14px;
+      color: $text-secondary;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 3px $focus-color;
+      }
     }
   }
+
+  .roles-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .role-card {
+      padding: 12px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius-md;
+      background: $secondary-light;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+
+      &:hover {
+        background: $primary-light;
+        transform: scale(1.05);
+      }
+
+      &.selected {
+        background: $success-color;
+        color: white;
+      }
+
+      .role-name {
+        font-size: 14px;
+        font-weight: 600;
+        text-align: center;
+      }
+    }
+  }
+}
+
+// Modern styles for cards, badges, buttons, and spinner animations
+.modern-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.modern-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.modern-badge {
+  display: inline-block;
+  background-color: #1b7894;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  margin-right: 8px;
+}
+
+.modern-button {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modern-button:hover {
+  background-color: #7e8821;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modern-button:disabled {
+  background-color: #012341;
+  cursor: not-allowed;
+}
+
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Paso 4: Confirmar Registro
+.confirmation-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #e3f2fd; /* Light blue background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.confirmation-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.summary-card {
+  padding: 15px;
+  background-color: #ffffff; /* White background for contrast */
+  border: 2px solid #90caf9; /* Blue border */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.summary-item-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #1565c0; /* Dark blue for titles */
+  margin-bottom: 10px;
+}
+
+.summary-item-detail {
+  font-size: 1rem;
+  color: #1e88e5; /* Medium blue for details */
+  margin-bottom: 10px;
+}
+
+.distrito-details small {
+  font-size: 0.9rem;
+  color: #42a5f5; /* Light blue for small text */
+}
+
+.delitos-summary .delito-tag {
+  font-size: 0.9rem;
+  background-color: #bbdefb; /* Light blue background for tags */
+  color: #0d47a1; /* Dark blue text */
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin: 5px;
+}
+
+.personas-summary .persona-summary {
+  padding: 10px;
+  background-color: #e3f2fd; /* Light blue background */
+  border: 1px solid #90caf9; /* Blue border */
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.persona-info h5 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #0d47a1; /* Dark blue for names */
+}
+
+.persona-detail {
+  font-size: 0.9rem;
+  color: #1e88e5; /* Medium blue for details */
+}
+
+.confirmation-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.btn-register {
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #0d47a1; /* Dark blue button */
+  color: #fff;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-register:hover {
+  background-color: #1565c0; /* Slightly lighter blue on hover */
+}
+
+// Modal styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-header {
+  background-color: #42b2c1; /* Purple background for header */
+  color: #fff; /* White text */
+  padding: 15px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.modal-body {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.success-icon {
+  font-size: 3rem;
+  color: #28a745; /* Green for success */
+  margin-bottom: 20px;
+}
+
+.case-details-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.case-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.case-details-table th {
+  background-color: #18b89d; /* Purple background for table header */
+  color: #fff; /* White text */
+  padding: 10px;
+  text-align: left;
+}
+
+.case-details-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.case-details-table .date {
+  color: #02162b; /* Blue for date */
+  font-weight: 600;
+}
+
+.btn-print {
+  background-color: #57040c; /* Red background for print button */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-print:hover {
+  background-color: #031e3d; /* Darker red on hover */
 }

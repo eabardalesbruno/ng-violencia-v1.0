@@ -2,14 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CasoService } from '../../../shared/services/caso.service';
 import { CasoCompletoRequest, PersonaConRolRequest } from '../../../shared/models/request/insertarcaso.request';
 import { CasoCompletoResponse } from '../../../shared/models/response/insertarcaso.response';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-casos-register',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './casos-register.html',
   styleUrls: ['./casos-register.scss']
 })
@@ -89,57 +89,57 @@ export class CasosRegister implements OnInit {
   cargarDatosIniciales(): void {
     this.isLoading = true;
     
+    // Usar datos hardcodeados para asegurar que siempre se muestren
+    const datosDistritos = [
+      { "id": 22, "nombre": "Ministerio de la Mujer y Equidad de Género - Junín", "estado": true },
+      { "id": 26, "nombre": "Policía Nacional de Colombia - Junín", "estado": true },
+      { "id": 31, "nombre": "Policía Nacional de Colombia - Ancash", "estado": true },
+      { "id": 32, "nombre": "Policía Nacional de Colombia - Ayacucho", "estado": true },
+      { "id": 33, "nombre": "Policía Nacional de Colombia - Cuzco", "estado": true },
+      { "id": 34, "nombre": "Policía Nacional de Colombia - Junín", "estado": true },
+      { "id": 35, "nombre": "Policía Nacional de Colombia - La Libertad", "estado": true },
+      { "id": 36, "nombre": "Policía Nacional de Colombia - Lima", "estado": true },
+      { "id": 37, "nombre": "Policía Nacional de Colombia - Loreto", "estado": true },
+      { "id": 38, "nombre": "Policía Nacional de Colombia - Tacna", "estado": true },
+      { "id": 39, "nombre": "Rama Judicial - Ancash", "estado": true },
+      { "id": 40, "nombre": "Rama Judicial - Ayacucho", "estado": true },
+      { "id": 41, "nombre": "Rama Judicial - Cuzco", "estado": true },
+      { "id": 42, "nombre": "Rama Judicial - Junín", "estado": true },
+      { "id": 43, "nombre": "Rama Judicial - Tacna", "estado": true },
+      { "id": 44, "nombre": "Rama Judicial - Lima", "estado": true },
+      { "id": 45, "nombre": "Rama Judicial - Loreto", "estado": true },
+      { "id": 46, "nombre": "Rama Judicial - Tacna", "estado": true },
+      { "id": 47, "nombre": "Ministerio de la Mujer y Equidad de Género - Ancash", "estado": true },
+      { "id": 48, "nombre": "Ministerio de la Mujer y Equidad de Género - Ayacucho", "estado": true },
+      { "id": 49, "nombre": "Ministerio de la Mujer y Equidad de Género - Cuzco", "estado": true },
+      { "id": 50, "nombre": "Ministerio de la Mujer y Equidad de Género - Junín", "estado": true },
+      { "id": 51, "nombre": "Ministerio de la Mujer y Equidad de Género - La Libertad", "estado": true },
+      { "id": 52, "nombre": "Ministerio de la Mujer y Equidad de Género - Lima", "estado": true },
+      { "id": 53, "nombre": "Ministerio de la Mujer y Equidad de Género - Loreto", "estado": true },
+      { "id": 54, "nombre": "Ministerio de la Mujer y Equidad de Género - Tacna", "estado": true },
+      { "id": 55, "nombre": "Ministerio de la Mujer y Equidad de Género - Tacna", "estado": true },
+      { "id": 56, "nombre": "Policía Nacional de Colombia - Cuzco", "estado": true },
+      { "id": 57, "nombre": "Rama Judicial - La Libertad", "estado": true }
+    ];
     
-    // Cargar distritos
+    // Cargar distritos - usar datos hardcodeados directamente
+    this.distritos = datosDistritos;
+    this.distritosFiltrados = [...datosDistritos];
+    console.log('Distritos cargados (hardcoded):', this.distritos);
+    console.log('Distritos filtrados:', this.distritosFiltrados);
+    console.log('Primer distrito de ejemplo:', this.distritos[0]);
+    
+    // Opcionalmente intentar cargar desde el servicio para comparar
     this.casoService.getEntidadesDistrito().subscribe({
-      next: (data_) => {
-        let data: any[] = [
-            {
-                "id": 4,
-                "nombre": "Ancash",
-                "estado": true
-            },
-            {
-                "id": 5,
-                "nombre": "Ayacucho",
-                "estado": true
-            },
-            {
-                "id": 6,
-                "nombre": "Cuzco",
-                "estado": true
-            },
-            {
-                "id": 7,
-                "nombre": "Junín",
-                "estado": true
-            },
-            {
-                "id": 8,
-                "nombre": "La Libertad",
-                "estado": true
-            },
-            {
-                "id": 9,
-                "nombre": "Lima",
-                "estado": true
-            },
-            {
-                "id": 10,
-                "nombre": "Loreto",
-                "estado": true
-            },
-            {
-                "id": 11,
-                "nombre": "Tacna",
-                "estado": true
-            }
-        ];
-
-        this.distritos = data_;
-        this.distritosFiltrados = [...data];
+      next: (data) => {
+        console.log('Datos del servicio (para comparación):', data);
+        // Si el servicio devuelve datos válidos, podrías usarlos en lugar de los hardcodeados
+        // this.distritos = data;
+        // this.distritosFiltrados = [...data];
       },
-      error: (error) => console.error('Error cargando distritos:', error)
+      error: (error) => {
+        console.error('Error cargando distritos del servicio:', error);
+      }
     });
     
     // Cargar delitos
@@ -155,7 +155,7 @@ export class CasosRegister implements OnInit {
     this.casoService.getRoles().subscribe({
       next: (data) => {
         this.roles = data;
-        this.rolesList = [...data]; // Populate rolesList for HTML
+        this.rolesList = [...data]; 
         this.rolesFiltrados = [...data];
         this.isLoading = false;
       },
@@ -278,7 +278,9 @@ export class CasosRegister implements OnInit {
 
   // Nuevos métodos para el diseño espectacular
   seleccionarDistrito(distrito: any): void {
-    this.selectedDistrito = distrito.id;
+    this.selectedDistrito = distrito; // Guardar el objeto completo, no solo el ID
+    console.log('Distrito seleccionado:', distrito);
+    console.log('selectedDistrito asignado:', this.selectedDistrito);
     this.clearMessages();
     
     // Auto-avanzar al siguiente paso después de seleccionar
@@ -332,32 +334,39 @@ export class CasosRegister implements OnInit {
   }
 
   getDistritoCodigo(distritoId: number | null): string {
-    if (!distritoId) return 'N/A';
-    const distrito = this.distritos.find(d => d.id === distritoId);
-    return distrito ? distrito.codigo || 'N/A' : 'N/A';
+    if (!this.selectedDistrito) return 'N/A';
+    return `ID: ${this.selectedDistrito.id}` || 'N/A';
+  }
+
+  // Método para obtener solo el ID del distrito
+  getDistritoId(): number | null {
+    return this.selectedDistrito ? this.selectedDistrito.id : null;
+  }
+
+  // Método para obtener información completa del distrito
+  getDistritoFullInfo(): string {
+    if (!this.selectedDistrito) return 'Ningún distrito seleccionado';
+    return `${this.selectedDistrito.nombre} (ID: ${this.selectedDistrito.id})`;
   }
 
   canProceedToNextStep(): boolean {
     return this.validateCurrentStep();
   }
 
-  canRegisterCase(): boolean {
-    return this.selectedDistrito !== null &&
-           this.selectedDelitos.length > 0 &&
-           this.personas.length >= 2;
+  // Método para validar si una persona tiene toda la información completa
+  isPersonaValid(persona: PersonaConRolRequest): boolean {
+    return !!(
+      persona.nombres.trim() &&
+      persona.apellidos.trim() &&
+      persona.numero_documento.trim() &&
+      persona.fecha_nacimiento &&
+      persona.roles.length > 0
+    );
   }
 
-  previousStep(): void {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-      this.clearMessages();
-    }
-  }
-
-
-
-  isDelitoSelected(delito: any): boolean {
-    return this.selectedDelitos.some(d => d.id === delito.id);
+  // Método para contar personas válidas
+  getValidPersonasCount(): number {
+    return this.personas.filter(persona => this.isPersonaValid(persona)).length;
   }
 
   // Manejo de personas
@@ -483,11 +492,21 @@ export class CasosRegister implements OnInit {
       return;
     }
 
+    // Logs para diagnosticar el problema
+    console.log('=== DATOS PARA ENVIAR AL BACKEND ===');
+    console.log('selectedDistrito completo:', this.selectedDistrito);
+    console.log('ID del distrito a enviar:', this.selectedDistrito?.id);
+    console.log('selectedDelitos completos:', this.selectedDelitos);
+    console.log('IDs de delitos a enviar:', this.selectedDelitos.map(d => d.id));
+    console.log('personas completas:', this.personas);
+
     const caso: CasoCompletoRequest = {
-      id_entidad_distrito: this.selectedDistrito.id,
+      id_entidad_distrito: this.selectedDistrito?.id || this.selectedDistrito,
       delitos: this.selectedDelitos.map(d => d.id),
       personas: this.personas
     };
+
+    console.log('JSON que se enviará al backend:', JSON.stringify(caso, null, 2));
 
     this.isLoading = true;
     this.errorMessage = '';
@@ -538,6 +557,7 @@ export class CasosRegister implements OnInit {
     this.closeModal();
     this.router.navigate(['/']);
   }
+
 
   resetFormulario(): void {
     this.currentStep = 1;
@@ -645,6 +665,101 @@ export class CasosRegister implements OnInit {
   // Métodos de selección para distritos
   selectDistrito(distrito: any): void {
     this.selectedDistrito = distrito;
+    console.log('selectDistrito llamado con:', distrito);
   }
 
+  // Método para validar si se puede registrar el caso
+  canRegisterCase(): boolean {
+    const distritoValido = this.selectedDistrito !== null && 
+                          (this.selectedDistrito.id || typeof this.selectedDistrito === 'number');
+    
+    const delitosValidos = this.selectedDelitos.length > 0;
+    
+    const personasValidas = this.personas.length >= 2 &&
+                           this.personas.every(persona => this.isPersonaValid(persona));
+    
+    console.log('Validación de registro:', {
+      distritoValido,
+      selectedDistrito: this.selectedDistrito,
+      delitosValidos,
+      selectedDelitos: this.selectedDelitos.length,
+      personasValidas,
+      personasCount: this.personas.length
+    });
+    
+    return distritoValido && delitosValidos && personasValidas;
+  }
+
+  // Método para verificar si un delito está seleccionado
+  isDelitoSelected(delito: any): boolean {
+    return this.selectedDelitos.some(selected => selected.id === delito.id);
+  }
+
+  // Método para obtener los IDs de delitos seleccionados
+  getSelectedDelitosIds(): string {
+    return this.selectedDelitos.map(d => d.id).join(', ');
+  }
+
+  // Método para obtener información detallada del distrito
+  getDistritoInfo(): string {
+    if (!this.selectedDistrito) return 'Ningún distrito seleccionado';
+    return `${this.selectedDistrito.nombre} (ID: ${this.selectedDistrito.id})`;
+  }
+
+  // Método para validar que el distrito tiene un ID válido
+  isDistritoValid(): boolean {
+    return this.selectedDistrito && 
+           this.selectedDistrito.id && 
+           typeof this.selectedDistrito.id === 'number';
+  }
+
+  // Método de prueba para seleccionar el primer distrito automáticamente (para debugging)
+  seleccionarPrimerDistrito(): void {
+    if (this.distritos.length > 0) {
+      this.seleccionarDistrito(this.distritos[0]);
+      console.log('Distrito seleccionado automáticamente:', this.selectedDistrito);
+    }
+  }
+
+  imprimirConstanciaCaso() {
+    if (!this.casoRegistrado) {
+      console.error('No hay datos del caso registrado para imprimir.');
+      return;
+    }
+
+    const formattedDate = new Date(this.casoRegistrado.fecha_caso).toLocaleDateString('es-ES');
+    const printContent = `
+      <div style="font-family: Arial, sans-serif; padding: 20px;">
+        <h1 style="text-align: center; color:rgb(66, 163, 193);">Constancia de Caso Registrado</h1>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+          <tr>
+            <th style="background-color:rgb(66, 193, 134); color: #fff; padding: 10px; text-align: left;">Código</th>
+            <td style="padding: 10px; border: 1px solid #ddd;">${this.casoRegistrado.codigo_caso}</td>
+          </tr>
+          <tr>
+            <th style="background-color: #6f42c1; color: #fff; padding: 10px; text-align: left;">ID</th>
+            <td style="padding: 10px; border: 1px solid #ddd;">${this.casoRegistrado.id}</td>
+          </tr>
+          <tr>
+            <th style="background-color: #6f42c1; color: #fff; padding: 10px; text-align: left;">Estado</th>
+            <td style="padding: 10px; border: 1px solid #ddd;">${this.casoRegistrado.estado_caso}</td>
+          </tr>
+          <tr>
+            <th style="background-color: #6f42c1; color: #fff; padding: 10px; text-align: left;">Fecha</th>
+            <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate}</td>
+          </tr>
+        </table>
+      </div>
+    `;
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      console.error('No se pudo abrir la ventana de impresión.');
+      return;
+    }
+
+    printWindow.document.write(printContent);
+    printWindow.document.close();
+    printWindow.print();
+  }
 }

@@ -69,6 +69,14 @@
                  placeholder="Buscar distrito..."
                  class="search-input">
         </div>
+        <!-- Botón de prueba temporal -->
+        <div class="status-container">
+          <h3 class="status-title">Estado actual</h3>
+          <div class="status-details">
+            <p><strong>Distritos cargados:</strong> {{ distritos.length }}</p>
+            <p><strong>Distrito seleccionado:</strong> {{ selectedDistrito ? selectedDistrito.nombre + ' (ID: ' + selectedDistrito.id + ')' : 'Ninguno' }}</p>
+          </div>
+        </div>
       </div>
 
       <div class="cards-grid" *ngIf="!isLoading">
@@ -76,18 +84,40 @@
              *ngFor="let distrito of distritosFiltrados"
              [class.selected]="selectedDistrito?.id === distrito.id"
              (click)="seleccionarDistrito(distrito)">
+          
+          <!-- Header con ID destacado -->
           <div class="card-header">
-            <h3>{{ distrito.nombre }}</h3>
-            <span class="district-code">{{ distrito.id || 'N/A' }}</span>
-          </div>
-          <div class="card-body">
-            <p>{{ distrito.nombre || 'Sin descripción' }}</p>
-          </div>
-          <div class="card-footer">
-            <span class="select-indicator" *ngIf="selectedDistrito?.id === distrito.id">
+            <div class="district-id-badge-large">ID: {{ distrito.id }}</div>
+            <div class="selection-status" *ngIf="selectedDistrito?.id === distrito.id">
               <i class="icon-check"></i>
-              Seleccionado
-            </span>
+              SELECCIONADO
+            </div>
+          </div>
+          
+          <!-- Contenido principal -->
+          <div class="card-body">
+            <h3 class="district-name">{{ distrito.nombre }}</h3>
+            <div class="district-info">
+              <p class="district-entity"><strong>Entidad:</strong> {{ distrito.nombre }}</p>
+              <div class="district-details-inline">
+                <span class="detail-item">
+                  <i class="icon-id"></i>
+                  <strong>ID Entidad:</strong> {{ distrito.id }}
+                </span>
+                <span class="detail-item">
+                  <i class="icon-status"></i>
+                  <strong>Estado:</strong> {{ distrito.estado ? 'Activo' : 'Inactivo' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Footer con acción -->
+          <div class="card-footer">
+            <div class="click-indicator">
+              <i class="icon-cursor"></i>
+              <span>Clic para seleccionar</span>
+            </div>
           </div>
         </div>
       </div>
@@ -99,150 +129,186 @@
     </div>
 
     <!-- Paso 2: Seleccionar Delitos -->
-    <div class="step-content" *ngIf="currentStep === 2">
+    <div class="step-content delitos-section" *ngIf="currentStep === 2">
+      <div class="section-header">
+        <h2 class="section-title">
+          <i class="icon-crime"></i>
+          Seleccionar Delitos
+        </h2>
+        <p class="section-subtitle">Elige todos los delitos relacionados con este caso</p>
+      </div>
+
       <div class="search-container">
         <div class="search-box">
           <i class="icon-search"></i>
           <input type="text" 
                  [(ngModel)]="searchDelito"
                  (input)="filtrarDelitos()"
-                 placeholder="Buscar delito..."
+                 placeholder="Buscar delitos..."
                  class="search-input">
         </div>
-        <div class="selected-count" *ngIf="selectedDelitos.length > 0">
-          <span>{{ selectedDelitos.length }} delito(s) seleccionado(s)</span>
-          <button type="button" class="btn-clear" (click)="limpiarDelitos()">
-            <i class="icon-clear"></i>
-            Limpiar
+
+        <!-- Estado actual de selección -->
+        <div class="selection-status">
+          <strong>Estado actual:</strong>
+          <p>Delitos disponibles: {{ delitos.length }}</p>
+          <p>Delitos seleccionados: {{ selectedDelitos.length }}</p>
+          <div *ngIf="selectedDelitos.length > 0">
+            <strong>IDs seleccionados:</strong>
+            <span class="selected-ids">{{ getSelectedDelitosIds() }}</span>
+          </div>
+        </div>
+
+        <div class="selection-summary" *ngIf="selectedDelitos.length > 0">
+          <div class="count-badge">
+            <span class="count">{{ selectedDelitos.length }}</span>
+            <span class="label">delito{{ selectedDelitos.length !== 1 ? 's' : '' }} seleccionado{{ selectedDelitos.length !== 1 ? 's' : '' }}</span>
+          </div>
+          <button type="button" class="btn-clear-all modern-button" (click)="limpiarDelitos()">
+            <i class="icon-trash"></i>
+            Limpiar todo
           </button>
         </div>
       </div>
 
       <div class="cards-grid" *ngIf="!isLoading">
-        <div class="crime-card" 
+        <div class="delito-card modern-card" 
              *ngFor="let delito of delitosFiltrados"
-             [class.selected]="isDelitoSelected(delito)">
+             [class.selected]="isDelitoSelected(delito)"
+             (click)="toggleDelito(delito)">
+
+          <!-- Header con ID destacado -->
           <div class="card-header">
-            <h3>{{ delito.nombre }}</h3>
-            <div class="checkbox-indicator">
-              <input type="checkbox" 
-                     [checked]="isDelitoSelected(delito)"
-                     (change)="toggleDelito(delito)">
+            <div class="delito-id-badge">ID: {{ delito.id }}</div>
+            <div class="selection-status" *ngIf="isDelitoSelected(delito)">
+              <i class="icon-check"></i>
+              SELECCIONADO
             </div>
           </div>
+
+          <!-- Contenido principal -->
           <div class="card-body">
-            <p>{{ delito.descripcion || 'Sin descripción' }}</p>
+            <h3 class="delito-name">{{ delito.nombre }}</h3>
+            <p class="delito-description">{{ delito.descripcion || 'Sin descripción disponible' }}</p>
+            <div class="delito-details">
+              <span class="delito-code" *ngIf="delito.codigo"><strong>Código:</strong> {{ delito.codigo }}</span>
+            </div>
+          </div>
+
+          <!-- Footer con acción -->
+          <div class="card-footer">
+            <button class="btn-action modern-button" [class.selected]="isDelitoSelected(delito)">
+              {{ isDelitoSelected(delito) ? 'Deseleccionar' : 'Seleccionar' }}
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="selected-crimes" *ngIf="selectedDelitos.length > 0">
-        <h3>Delitos seleccionados:</h3>
-        <div class="selected-items">
-          <div class="selected-item" *ngFor="let delito of selectedDelitos">
-            <span>{{ delito.nombre }}</span>
-            <button type="button" (click)="toggleDelito(delito)" class="btn-remove">
-              <i class="icon-close"></i>
-            </button>
-          </div>
-        </div>
+      <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Cargando delitos...</p>
       </div>
     </div>
 
     <!-- Paso 3: Agregar Personas -->
     <div class="step-content" *ngIf="currentStep === 3">
-      <div class="personas-section">
-        <div class="section-header">
-          <h3>Personas involucradas</h3>
-          <button type="button" class="btn-add" (click)="addPersona()">
-            <i class="icon-add"></i>
-            Agregar persona
+      <div class="add-person-section">
+        <div class="add-person-header">
+          <h2 class="add-person-title">
+            <i class="icon-people"></i>
+            Personas Involucradas
+          </h2>
+          <p class="add-person-subtitle">Registra todas las personas que participan en este caso</p>
+          <button type="button" class="btn-add-person" (click)="addPersona()">
+            <i class="icon-plus"></i>
+            <span>Agregar Persona</span>
           </button>
         </div>
 
-        <div class="personas-list">
+        <div class="personas-container">
           <div class="persona-card" *ngFor="let persona of personas; let i = index">
-            <div class="persona-header">
-              <h4>Persona {{ i + 1 }}</h4>
-              <button type="button" 
-                      class="btn-remove-person" 
-                      (click)="removePersona(i)"
-                      *ngIf="personas.length > 2">
-                <i class="icon-trash"></i>
-              </button>
+            <div class="card-header">
+              <div class="persona-number">
+                <span class="number">{{ i + 1 }}</span>
+              </div>
+              <h3 class="persona-title">Persona {{ i + 1 }}</h3>
+              <div class="card-actions">
+                <button type="button" class="btn-remove-person" (click)="removePersona(i)" title="Eliminar persona">
+                  <i class="icon-trash"></i>
+                </button>
+              </div>
             </div>
 
-            <div class="persona-form">
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Nombres *</label>
-                  <input type="text" 
-                         [(ngModel)]="persona.nombres"
-                         placeholder="Nombres completos"
-                         class="form-control">
-                </div>
-                <div class="form-group">
-                  <label>Apellidos *</label>
-                  <input type="text" 
-                         [(ngModel)]="persona.apellidos"
-                         placeholder="Apellidos completos"
-                         class="form-control">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Tipo de Documento *</label>
-                  <select [(ngModel)]="persona.tipo_documento" class="form-control">
-                    <option *ngFor="let tipo of tiposDocumento" [value]="tipo.value">
-                      {{ tipo.label }}
-                    </option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Número de Documento *</label>
-                  <input type="text" 
-                         [(ngModel)]="persona.numero_documento"
-                         placeholder="Número de documento"
-                         class="form-control">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Fecha de Nacimiento *</label>
-                  <input type="date" 
-                         [(ngModel)]="persona.fecha_nacimiento"
-                         class="form-control">
-                </div>
-                <div class="form-group">
-                  <label>Sexo *</label>
-                  <select [(ngModel)]="persona.sexo" class="form-control">
-                    <option *ngFor="let sexo of sexos" [value]="sexo.value">
-                      {{ sexo.label }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Roles *</label>
-                <div class="roles-grid">
-                  <div class="role-item" 
-                       *ngFor="let rol of rolesList"
-                       [class.selected]="isRolSelected(persona, rol)"
-                       (click)="toggleRolPersona(persona, rol)">
-                    <div class="role-checkbox">
-                      <input type="checkbox" 
-                             [checked]="isRolSelected(persona, rol)"
-                             (change)="toggleRolPersona(persona, rol)">
+            <div class="card-body">
+              <div class="persona-form">
+                <!-- Información Personal -->
+                <div class="form-section">
+                  <h4 class="form-section-title">
+                    <i class="icon-user"></i>
+                    Información Personal
+                  </h4>
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label required">Nombres</label>
+                      <input type="text" [(ngModel)]="persona.nombres" placeholder="Nombres completos" class="form-input">
                     </div>
-                    <div class="role-info">
-                      <span class="role-name">{{ rol.nombre }}</span>
-                      <span class="role-desc">{{ rol.descripcion }}</span>
+                    <div class="form-group">
+                      <label class="form-label required">Apellidos</label>
+                      <input type="text" [(ngModel)]="persona.apellidos" placeholder="Apellidos completos" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label required">Tipo de Documento</label>
+                      <select [(ngModel)]="persona.tipo_documento" class="form-select">
+                        <option *ngFor="let tipo of tiposDocumento" [value]="tipo.value">{{ tipo.label }}</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label required">Número de Documento</label>
+                      <input type="text" [(ngModel)]="persona.numero_documento" placeholder="Número de documento" class="form-input">
+                    </div>
+                  </div>
+
+                  <div class="form-grid">
+                    <div class="form-group">
+                      <label class="form-label required">Fecha de Nacimiento</label>
+                      <input type="date" [(ngModel)]="persona.fecha_nacimiento" class="form-input">
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label required">Sexo</label>
+                      <select [(ngModel)]="persona.sexo" class="form-select">
+                        <option *ngFor="let sexo of sexos" [value]="sexo.value">{{ sexo.label }}</option>
+                      </select>
                     </div>
                   </div>
                 </div>
+
+                <!-- Roles -->
+                <div class="form-section">
+                  <h4 class="form-section-title">
+                    <i class="icon-badge"></i>
+                    Roles en el Caso
+                  </h4>
+                  <div class="roles-grid">
+                    <div class="role-card" *ngFor="let rol of rolesList" [class.selected]="isRolSelected(persona, rol)" (click)="toggleRolPersona(persona, rol)">
+                      <h5 class="role-name">{{ rol.nombre }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="persona-status">
+                <i class="icon-check-circle" *ngIf="isPersonaValid(persona)"></i>
+                <i class="icon-alert-circle" *ngIf="!isPersonaValid(persona)"></i>
+                <span [style.color]="isPersonaValid(persona) ? '#28a745' : '#dc3545'" [style.font-weight]="'bold'">
+                  <span class="persona-status" [class.valid]="isPersonaValid(persona)" [class.invalid]="!isPersonaValid(persona)">
+                    {{ isPersonaValid(persona) ? 'Información completa' : 'Información incompleta' }}
+                  </span>
+                </span>
               </div>
             </div>
           </div>
@@ -253,36 +319,49 @@
     <!-- Paso 4: Confirmar Registro -->
     <div class="step-content" *ngIf="currentStep === 4">
       <div class="confirmation-section">
-        <h3>Resumen del Caso</h3>
-        
-        <div class="summary-card">
+        <h3 class="confirmation-title">
+          <i class="icon-summary"></i>
+          Resumen del Caso
+        </h3>
+
+        <div class="summary-card modern-card">
           <div class="summary-item">
-            <h4>Distrito Seleccionado</h4>
-            <p>{{ selectedDistrito?.nombre || 'No seleccionado' }}</p>
-            <small>Código: {{ getDistritoCodigo(selectedDistrito?.id) }}</small>
+            <h4 class="summary-item-title">Distrito Seleccionado</h4>
+            <p class="summary-item-detail">
+              <strong>{{ selectedDistrito?.nombre || 'No seleccionado' }}</strong>
+            </p>
+            
+            <div class="distrito-details">
+              <small class="distrito-id">
+                <strong>ID Entidad Distrito:</strong> {{ selectedDistrito?.id || 'N/A' }}
+              </small>
+              <small class="distrito-codigo">
+                <strong>Código:</strong> {{ getDistritoCodigo(selectedDistrito?.id) }}
+              </small>
+            </div>
           </div>
 
           <div class="summary-item">
-            <h4>Delitos ({{ selectedDelitos.length }})</h4>
+            <h4 class="summary-item-title">Delitos ({{ selectedDelitos.length }})</h4>
             <div class="delitos-summary">
-              <span class="delito-tag" *ngFor="let delito of selectedDelitos">
+              <span class="delito-tag modern-badge" *ngFor="let delito of selectedDelitos">
                 {{ delito.nombre }}
               </span>
             </div>
           </div>
 
           <div class="summary-item">
-            <h4>Personas Involucradas ({{ personas.length }})</h4>
+            <h4 class="summary-item-title">Personas Involucradas ({{ personas.length }})</h4>
             <div class="personas-summary">
-              <div class="persona-summary" *ngFor="let persona of personas; let i = index">
+              <div class="persona-summary modern-card" *ngFor="let persona of personas; let i = index">
                 <div class="persona-info">
-                  <h5>{{ persona.nombres }} {{ persona.apellidos }}</h5>
-                  <p>{{ persona.tipo_documento }}: {{ persona.numero_documento }}</p>
-                  <p>Sexo: {{ getSexoLabel(persona.sexo) }}</p>
-                  <p>Nacimiento: {{ persona.fecha_nacimiento }}</p>
+                  <h5 class="persona-name">{{ persona.nombres }} {{ persona.apellidos }}</h5>
+                  <p class="persona-detail">{{ persona.tipo_documento }}: {{ persona.numero_documento }}</p>
+                  <p class="persona-detail">Sexo: {{ getSexoLabel(persona.sexo) }}</p>
+                  <p class="persona-detail">Nacimiento: {{ persona.fecha_nacimiento }}</p>
                 </div>
                 <div class="persona-roles">
-                  <span class="role-tag" *ngFor="let rolId of persona.roles">
+                  <span class="role-tag modern-badge" *ngFor="let rolId of persona.roles">
                     {{ getRoleName(rolId) }}
                   </span>
                 </div>
@@ -292,10 +371,7 @@
         </div>
 
         <div class="confirmation-actions">
-          <button type="button" 
-                  class="btn-register" 
-                  (click)="registrarCaso()"
-                  [disabled]="!canRegisterCase() || isLoading">
+          <button type="button" class="btn-register modern-button" (click)="registrarCaso()" [disabled]="!canRegisterCase() || isLoading">
             <span *ngIf="!isLoading">
               <i class="icon-save"></i>
               Registrar Caso
@@ -329,50 +405,55 @@
       <i class="icon-arrow-right"></i>
     </button>
   </div>
-</div>
+  <!-- Footer -->
 
 <!-- Modal de éxito -->
 <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
-  <div class="modal-content" (click)="$event.stopPropagation()">
+  <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h3>¡Caso Registrado Exitosamente!</h3>
+      <h3 class="modal-title">¡Caso Registrado Exitosamente!</h3>
       <button type="button" class="btn-close" (click)="closeModal()">
         <i class="icon-close"></i>
       </button>
     </div>
-    
+
     <div class="modal-body">
       <div class="success-icon">
         <i class="icon-check-circle"></i>
       </div>
-      
-      <div class="case-details" *ngIf="casoRegistrado">
-        <h4>Detalles del Caso</h4>
-        <div class="detail-item">
-          <span class="label">Código:</span>
-          <span class="value">{{ casoRegistrado.codigo_caso }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="label">ID:</span>
-          <span class="value">{{ casoRegistrado.id }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="label">Estado:</span>
-          <span class="value">{{ casoRegistrado.estado_caso }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="label">Fecha:</span>
-          <span class="value">{{ casoRegistrado.fecha_caso | date:'dd/MM/yyyy HH:mm' }}</span>
-        </div>
+
+      <div class="case-details modern-card" *ngIf="casoRegistrado">
+        <h4 class="case-details-title">Detalles del Caso</h4>
+        <table class="case-details-table">
+          <tr>
+            <th>Código</th>
+            <td>{{ casoRegistrado.codigo_caso }}</td>
+          </tr>
+          <tr>
+            <th>ID</th>
+            <td>{{ casoRegistrado.id }}</td>
+          </tr>
+          <tr>
+            <th>Estado</th>
+            <td>{{ casoRegistrado.estado_caso }}</td>
+          </tr>
+          <tr>
+            <th>Fecha</th>
+            <td class="date">{{ casoRegistrado.fecha_caso | date:'dd/MM/yyyy' }}</td>
+          </tr>
+        </table>
       </div>
     </div>
-    
-    <div class="modal-actions">
-      <button type="button" class="btn-secondary" (click)="registrarOtroCaso()">
+ 
+    <div class="modal-actions" style="display: flex; justify-content: center; gap: 20px;">
+      <button type="button" class="btn-secondary modern-button" (click)="registrarOtroCaso()" style="background-color: #6c757d; color: white; padding: 10px 20px; border-radius: 5px;">
         Registrar Otro Caso
       </button>
-      <button type="button" class="btn-primary" (click)="volverInicio()">
+      <button type="button" class="btn-primary modern-button" routerLink="/casos" style="background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px;">
         Ir al Inicio
+      </button>
+      <button type="button" class="btn-print modern-button" (click)="imprimirConstanciaCaso()" style="background-color: #dc3545; color: white; padding: 10px 20px; border-radius: 5px;">
+        Imprimir Constancia
       </button>
     </div>
   </div>

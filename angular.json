@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-orders-management-v1": {
+    "ng-violencia-v1": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,6 +17,8 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/ng-violencia-v1",
+            "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -66,10 +68,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-orders-management-v1:build:production"
+              "buildTarget": "ng-violencia-v1:build:production"
             },
             "development": {
-              "buildTarget": "ng-orders-management-v1:build:development"
+              "buildTarget": "ng-violencia-v1:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -106,6 +108,9 @@
     }
   },
   "cli": {
-    "analytics": "adc3f736-7e8d-4cbe-80e7-55c15339b277"
+    "analytics": "adc3f736-7e8d-4cbe-80e7-55c15339b277",
+    "cache": {
+      "enabled": false
+    }
   }
 }

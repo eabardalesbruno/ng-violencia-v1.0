@@ -19,9 +19,9 @@ export interface Entidad {
 @Injectable({ providedIn: 'root' })
 export class DistritoFiscalService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/distritosFiscales';
+  private readonly apiUrl = '${environment.api.base}/distritosFiscales';
   // Nueva URL para entidades
-  private readonly entidadesUrl = 'http://localhost:8080/entidades';
+  private readonly entidadesUrl = '${environment.api.base}/entidades';
 
   getDistritosFiscales(): Observable<DistritoFiscal[]> {
     return this.httpClient.get<DistritoFiscal[]>(this.apiUrl);

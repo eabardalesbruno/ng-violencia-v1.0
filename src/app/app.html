@@ -1,3 +1,4 @@
+@if (isAuthenticated){
 <div class="app-wrapper">
     <nav app-header class="app-header navbar navbar-expand bg-body"></nav>   
     <aside app-sidebar class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark"> </aside>
@@ -5,3 +6,8 @@
 		 <router-outlet></router-outlet>
 	</main>
 </div>
+} @else {
+	<div class="login-page bg-body-secondary">
+		<router-outlet />
+	</div>
+}

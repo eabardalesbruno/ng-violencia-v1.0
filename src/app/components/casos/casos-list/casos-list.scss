@@ -241,46 +241,59 @@ $personas-badge-danger: linear-gradient(135deg, #ef5350 0%, #c62828 100%);
 // QR CODE
 // =========================================
 .qr-container {
-  display: inline-block;
-  border: 2px solid #dee2e6;
-  border-radius: 0.5rem;
+  background: white;
+  border-radius: 12px;
   padding: 1rem;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 2px solid #e9ecef;
+  margin: 0 auto;
+  max-width: 180px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: #007bff;
+  }
+
   .qr-image {
-    transition: transform 0.2s ease;
-    display: block;
-    max-width: 100%;
-    height: auto;
+    border-radius: 8px;
+    padding: 0.5rem;
+    background: white;
+    transition: all 0.3s ease;
     
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
   }
-  
-  ngx-qrcode {
-    display: inline-block;
+
+  .text-muted {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 0.5rem;
   }
 }
 
-.text-center {
-  .qr-container {
-    margin: 0 auto;
+// Estilo para cuando no hay QR disponible
+.no-qr-placeholder {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  color: #6c757d;
+  
+  i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
   }
   
-  ngx-qrcode {
-    display: inline-block;
-    border: 2px solid #dee2e6;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  small {
+    font-size: 0.85rem;
+    opacity: 0.8;
   }
 }
-
-// =========================================
-/// ...existing code...
 
 // =========================================
 // ESTILOS PARA IMPRESIÓN

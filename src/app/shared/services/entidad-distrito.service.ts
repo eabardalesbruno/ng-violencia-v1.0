@@ -6,7 +6,7 @@ import { EntidadDistritoResponse, EntidadDistritoPaginatedResponse, Entidad } fr
 @Injectable({ providedIn: 'root' })
 export class EntidadDistritoService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/entidadesdistrito'; 
+  private readonly apiUrl = '${environment.api.base}/entidadesdistrito'; 
 
   // Obtener todas las entidades-distrito
   getEntidadesDistrito(): Observable<EntidadDistritoResponse[]> {
