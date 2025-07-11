@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
+import { environment } from '../../../environments/enviroment';
 
 // 🏷️ Interfaces para tipado
 interface PersonaDetail {
@@ -34,14 +35,14 @@ interface CasoDetail {
 export class RolesPersonService {
 
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = '${environment.api.base}/api/personas-roles-vista';
-  private readonly rolesPersonCasoUrl = '${environment.api.base}/rolespersonacaso/filter/paging';
-  private readonly rolesPersonCasoBaseUrl = '${environment.api.base}/rolespersonacaso';
+  private readonly apiUrl = `${environment.api.base}/api/personas-roles-vista`;
+  private readonly rolesPersonCasoUrl = `${environment.api.base}/rolespersonacaso/filter/paging`;
+  private readonly rolesPersonCasoBaseUrl = `${environment.api.base}/rolespersonacaso`;
   
   // 🆕 URLs para los nuevos servicios
-  private readonly personasUrl = '${environment.api.base}/personas';
-  private readonly rolesUrl = '${environment.api.base}/roles';
-  private readonly casosUrl = '${environment.api.base}/casos';
+  private readonly personasUrl = `${environment.api.base}/personas`;
+  private readonly rolesUrl = `${environment.api.base}/roles`;
+  private readonly casosUrl = `${environment.api.base}/casos`;
 
   // 🔄 Métodos existentes
   getPersonasRolesByCasoId(casoId: number): Observable<any[]> {

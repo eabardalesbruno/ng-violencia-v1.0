@@ -18,11 +18,12 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": "dist/ng-violencia-v1",
-            "index": "src/index.html",
+          
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
+            "index": "src/index.html",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -54,15 +55,35 @@
                   "maximumError": "8kB"
                 }
               ],
+
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+
+
               "outputHashing": "all"
             },
             "development": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "dev": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
@@ -72,6 +93,9 @@
             },
             "development": {
               "buildTarget": "ng-violencia-v1:build:development"
+            },
+            "dev": {
+              "buildTarget": "ng-violencia-v1:build:dev"
             }
           },
           "defaultConfiguration": "development"
@@ -110,7 +134,7 @@
   "cli": {
     "analytics": "adc3f736-7e8d-4cbe-80e7-55c15339b277",
     "cache": {
-      "enabled": false
+      "enabled": true
     }
   }
 }

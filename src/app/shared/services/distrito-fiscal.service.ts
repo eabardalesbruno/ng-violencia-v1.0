@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/enviroment';
 
 export interface DistritoFiscal {
   id: number;
@@ -19,9 +20,9 @@ export interface Entidad {
 @Injectable({ providedIn: 'root' })
 export class DistritoFiscalService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = '${environment.api.base}/distritosFiscales';
+  private readonly apiUrl = `${environment.api.base}/distritosFiscales`;
   // Nueva URL para entidades
-  private readonly entidadesUrl = '${environment.api.base}/entidades';
+  private readonly entidadesUrl = `${environment.api.base}/entidades`;
 
   getDistritosFiscales(): Observable<DistritoFiscal[]> {
     return this.httpClient.get<DistritoFiscal[]>(this.apiUrl);

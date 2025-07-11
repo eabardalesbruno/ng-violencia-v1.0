@@ -8,6 +8,7 @@ import { PersonaRolesVistaService } from '../../../shared/services/persona-roles
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HasRole } from '../../../shared/directives/has-role';
+import { environment } from '../../../../environments/environment.dev';
 
 
 @Component({
@@ -465,7 +466,7 @@ getRolesUnicos(): string[] {
         this.pdfSrc = 'assets/pdfs/caso-' + id + '.pdf';
         
         // Generar código QR
-        this.codigoQR = `http://localhost:4200/casos`;
+        this.codigoQR = `${environment.api.base}/casos`;
         this.generateQRCode(this.codigoQR);
         
         // Cargar personas asociadas al caso
@@ -550,7 +551,7 @@ getRolesUnicos(): string[] {
       return;
     }
 
-    this.casoService.actualizarEstado(`http://localhost:8080/api/generales/casos/${casoId}/actualizar-estado?forzarArchivado=${forzarArchivado}`)
+    this.casoService.actualizarEstado(`${environment.api.base}/api/generales/casos/${casoId}/actualizar-estado?forzarArchivado=${forzarArchivado}`)
       .subscribe({
         next: () => {
           this.cerrarModal('updateEstadoModal');

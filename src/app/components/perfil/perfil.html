@@ -1,0 +1,23 @@
+<div class="perfil-container perfil-bg-gradient">
+  <div class="perfil-card perfil-card-vibrant">
+    <div class="perfil-avatar perfil-avatar-glow">
+      <img src="/assets/img/user2-160x160.jpg" alt="Avatar" />
+    </div>
+    <h2 class="perfil-nombre text-gradient">{{ user.nombres }} {{ user.apellidos }}</h2>
+    <div class="perfil-rol mb-3">
+      <span class="badge badge-admin" *ngIf="user.rol === 'ADMIN'">Administrador</span>
+      <span class="badge badge-operador" *ngIf="user.rol !== 'ADMIN'">Operador</span>
+    </div>
+    <div class="perfil-info mt-2">
+      <div><i class="bi bi-person-badge me-2"></i> <strong>Usuario:</strong> {{ user.username }}</div>
+    </div>
+    <div class="perfil-actions mt-4">
+      <button class="btn btn-gradient-profile btn-sm me-2" (click)="onEditarPerfil()">
+        <i class="bi bi-pencil-square me-1"></i> Editar
+      </button>
+      <button class="btn btn-gradient-logout btn-sm" (click)="onCerrarSesion()">
+        <i class="bi bi-box-arrow-right me-1"></i> Salir
+      </button>
+    </div>
+  </div>
+</div>

@@ -4,11 +4,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { PersonaResponse } from '../models/response/personas.response';
 import { Observable } from 'rxjs';
 import { PersonaRequest } from '../models/request/personas.request';
+import { environment } from '../../../environments/enviroment';
 
 @Injectable({ providedIn: 'root' })
 export class PersonasService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = '${environment.api.base}/personas'; 
+  private readonly apiUrl = `${environment.api.base}/personas`; 
 
   getPersonas(): Observable<PersonaResponse[]> {
     return this.httpClient.get<PersonaResponse[]>(this.apiUrl);

@@ -2,11 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EntidadDistritoResponse, EntidadDistritoPaginatedResponse, Entidad } from '../models/response/entidad-distrito.response';
+import { environment } from '../../../environments/enviroment';
 
 @Injectable({ providedIn: 'root' })
 export class EntidadDistritoService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = '${environment.api.base}/entidadesdistrito'; 
+  private readonly apiUrl = `${environment.api.base}/entidadesdistrito`; 
 
   // Obtener todas las entidades-distrito
   getEntidadesDistrito(): Observable<EntidadDistritoResponse[]> {

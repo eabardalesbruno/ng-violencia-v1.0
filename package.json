@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --configuration=development",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "serve:dev": "ng serve --configuration=dev",
     "serve:ssr:ng-violencia-v1": "node dist/ng-violencia-v1/server/server.mjs"
   },
   "private": true,

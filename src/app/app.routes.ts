@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { Home } from './components/home/home';
 import { RolesPerson } from './components/roles-person/roles-person-list/roles-person';
+
+// (La ruta de configuración se agregará más abajo, antes de las redirecciones)
 import { EntidadDistritoRegister } from './components/entidad-distrito/entidad-distrito-register/entidad-distrito-register';
 import { EntidadDistrito } from './components/entidad-distrito/entidad-distrito-list/entidad-distrito';
 import { Personas } from './components/roles-person/personas/personas';
@@ -11,13 +13,29 @@ import { CasosView } from './components/casos/casos-view/casos-view';
 import { CasosRegister } from './components/casos/casos-register/casos-register';
 import { RolesPersonRegister } from './components/roles-person/roles-person-register/roles-person-register';
 import { SignIn } from './components/auth/sign-in/sign-in';
+import { ConfiguracionSistema } from './components/configuracion/configuracion-sistema';
 import { authGuard } from './shared/guards/auth-guard';
 import { noAuthGuard } from './shared/guards/no-auth-guard';
+import { GraficosComponent } from './components/graficos/graficos.component';
 
 export const routes: Routes = [
-  // 🏠 Ruta principal
+  // 👤 Perfil de Usuario
+  {
+    path: 'perfil',
+    loadComponent: () => import('./components/perfil/perfil').then(m => m.PerfilComponent),
+    title: 'Mi Perfil',
+    canActivate: [authGuard]
+  },
+  // 🔀 Redirección por defecto al login
   {
     path: '', 
+    redirectTo: '/sign-in',
+    pathMatch: 'full'
+  },
+  
+  // 🏠 Ruta principal (home)
+  {
+    path: 'home', 
     component: Home,
     title: 'Inicio - Sistema de Violencia',
     canActivate: [authGuard]
@@ -133,41 +151,42 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
 
-  // 🔄 Redirecciones útiles
+  // 📊 Ruta para Reportes y Estadísticas
   {
-    path: 'dashboard',
-    redirectTo: '',
-    pathMatch: 'full',
-    canActivate: [authGuard]
-
-  },
-  {
-    path: 'home',
-    redirectTo: '',
-    pathMatch: 'full',
+    path: 'graficosyestadisticas',
+    component: GraficosComponent,
+    title: 'Reportes y Estadísticas',
     canActivate: [authGuard]
   },
 
-  // 🚫 Ruta para páginas no encontradas (debe ir al final)
+  // ⚙️ Configuración del Sistema (Solo ADMIN)
   {
-    path: '**',
-    redirectTo: '',
-    pathMatch: 'full',
+    path: 'configuracion',
+    component: ConfiguracionSistema,
+    title: 'Configuración del Sistema',
     canActivate: [authGuard]
   },
 
-  // 🚫 Ruta para páginas no encontradas (debe ir al final)
- 
-
-   {
+  // � Autenticación (DEBE IR ANTES de las rutas catch-all)
+  {
     path: 'sign-in',
     component: SignIn,
-    title: 'Editar Caso',
+    title: 'Iniciar Sesión',
     canActivate: [noAuthGuard]
+  },
 
+  // � Redirecciones útiles
+  {
+    path: 'dashboard',
+    redirectTo: '/home',
+    pathMatch: 'full'
+  },
+
+  // 🚫 Ruta para páginas no encontradas (DEBE IR AL FINAL)
+  {
+    path: '**',
+    redirectTo: '/sign-in',
+    pathMatch: 'full'
   }
-
-
-
 
 ];

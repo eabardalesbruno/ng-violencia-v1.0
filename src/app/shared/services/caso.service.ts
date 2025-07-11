@@ -1,14 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 import { CasoResponse } from '../models/response/caso.response';
 import { CasoCompletoRequest } from '../models/request/insertarcaso.request';
 import { CasoCompletoResponse } from '../models/response/insertarcaso.response';
+import { environment } from '../../../environments/environment.dev';
 
 @Injectable({ providedIn: 'root' })
 export class CasoService {
   private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = '${environment.api.base}/casos';
+  private readonly apiUrl = `${environment.api.base}/casos`;
 
   // Obtiene casos paginados y filtrados
   getCasosByPage(
@@ -43,22 +45,22 @@ export class CasoService {
 
   // Inserta un nuevo caso
   insertarCaso(caso: CasoCompletoRequest): Observable<CasoCompletoResponse> {
-    return this.httpClient.post<CasoCompletoResponse>('${environment.api.base}/api/casos/insertar', caso);
+    return this.httpClient.post<CasoCompletoResponse>(`${environment.api.base}/api/casos/insertar`, caso);
   }
 
   // Obtiene todas las entidades distrito
   getEntidadesDistrito(): Observable<any[]> {
-    return this.httpClient.get<any[]>('${environment.api.base}/entidadesdistrito');
+    return this.httpClient.get<any[]>(`${environment.api.base}/entidadesdistrito`);
   }
 
   // Obtiene todos los delitos
   getDelitos(): Observable<any[]> {
-    return this.httpClient.get<any[]>('${environment.api.base}/delitos');
+    return this.httpClient.get<any[]>(`${environment.api.base}/delitos`);
   }
 
   // Obtiene todos los roles
   getRoles(): Observable<any[]> {
-    return this.httpClient.get<any[]>('${environment.api.base}/roles');
+    return this.httpClient.get<any[]>(`${environment.api.base}/roles`);
   }
 
   // ACTUALIZA ESTADO DE UN CASO

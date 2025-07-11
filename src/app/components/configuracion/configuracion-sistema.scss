@@ -1,0 +1,221 @@
+// Estilos para el componente de configuración del sistema
+.content-header {
+  padding: 15px 0;
+  
+  h1 {
+    color: #343a40;
+    font-weight: 600;
+  }
+}
+
+.card-outline {
+  border-top: 3px solid var(--bs-primary);
+}
+
+// Estilos para las opciones de tema
+.theme-option {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  &.active {
+    border-color: var(--bs-primary);
+    background-color: rgba(0, 123, 255, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3);
+  }
+  
+  h6 {
+    margin-top: 8px;
+    font-weight: 600;
+    color: #495057;
+  }
+}
+
+.theme-preview {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  .sidebar-demo {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--demo-primary), var(--demo-secondary));
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 70%;
+      height: 100%;
+      background: #f8f9fa;
+    }
+  }
+}
+
+// Temas específicos para las previews
+.blue-theme {
+  --demo-primary: #007bff;
+  --demo-secondary: #0056b3;
+}
+
+.green-theme {
+  --demo-primary: #28a745;
+  --demo-secondary: #1e7e34;
+}
+
+.gray-theme {
+  --demo-primary: #6c757d;
+  --demo-secondary: #495057;
+}
+
+.red-theme {
+  --demo-primary: #dc3545;
+  --demo-secondary: #c82333;
+}
+
+.purple-theme {
+  --demo-primary: #6f42c1;
+  --demo-secondary: #59359a;
+}
+
+.dark-theme {
+  --demo-primary: #343a40;
+  --demo-secondary: #212529;
+}
+
+// Vista previa del sidebar
+.preview-container {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 400px;
+}
+
+.sidebar-preview {
+  width: 100%;
+  max-width: 250px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  .sidebar-header {
+    padding: 15px;
+    background: linear-gradient(135deg, var(--sidebar-primary-color, #007bff), var(--sidebar-secondary-color, #0056b3));
+    color: var(--sidebar-text-color, #ffffff);
+    text-align: center;
+    
+    h6 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .sidebar-menu {
+    padding: 10px 0;
+    
+    .menu-header {
+      padding: 8px 15px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #6c757d;
+      text-transform: uppercase;
+      background: #f8f9fa;
+    }
+    
+    .menu-item {
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      color: #495057;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      
+      i {
+        margin-right: 10px;
+        width: 16px;
+        text-align: center;
+      }
+      
+      span {
+        font-size: 0.85rem;
+      }
+      
+      &:hover {
+        background: rgba(0, 123, 255, 0.1);
+        color: var(--sidebar-primary-color, #007bff);
+      }
+      
+      &.active {
+        background: linear-gradient(135deg, var(--sidebar-primary-color, #007bff), var(--sidebar-secondary-color, #0056b3));
+        color: var(--sidebar-text-color, #ffffff);
+      }
+    }
+  }
+}
+
+// Indicador de color actual
+.color-preview {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 3px solid #dee2e6;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .theme-option {
+    margin-bottom: 15px;
+  }
+  
+  .sidebar-preview {
+    max-width: 200px;
+  }
+  
+  .preview-container {
+    text-align: center;
+  }
+}
+
+// Animaciones
+@keyframes themeApplied {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.theme-option.active {
+  animation: themeApplied 0.5s ease;
+}

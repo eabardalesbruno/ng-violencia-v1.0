@@ -47,7 +47,8 @@ export class SignIn {
       .subscribe({
         next: (response) => {
           this.toastr.success('Bienvenido...!');
-          this.router.navigate(['/']);
+          // Redirigir a la página principal (home) después del login exitoso
+          this.router.navigate(['/home']);
         },
         error: (error) => {
           if (error.error?.message?.includes('Bad credentials')) {

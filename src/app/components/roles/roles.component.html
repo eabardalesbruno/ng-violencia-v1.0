@@ -1,0 +1,11 @@
+<div class="sesion-gestion-usuarios" style="background: inherit;">
+  <div class="sidebar-section-title">
+    Gestión de Usuarios
+  </div>
+  <ul class="sidebar-users-list">
+    <li *ngFor="let user of usuarios" style="background: inherit;">
+      <span>{{ user.nombre }}</span>
+      <span class="user-role" [ngClass]="user.rol">{{ user.rol | titlecase }}</span>
+    </li>
+  </ul>
+</div>

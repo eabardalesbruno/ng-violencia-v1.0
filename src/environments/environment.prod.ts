@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   api: {
-    base: 'http://serverproductionapi.lima.bardales.pe'
+    base: 'https://serverproductionapi.lima.bardales.pe'
   }
-}
+};

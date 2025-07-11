@@ -1,0 +1,491 @@
+/* Secciones colapsables/expandibles en el sidebar */
+.sidebar-section-collapsible {
+  margin-bottom: 2rem;
+  border-radius: 1.2rem;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.06);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.sidebar-section-collapsible .section-title-row {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.08rem;
+  font-weight: 600;
+  padding: 0.7em 1.2em;
+  border-radius: 0.8em 0.8em 0 0;
+  background: #f8fafc;
+  color: #7c3aed;
+  margin-bottom: 0;
+  transition: background 0.2s, color 0.2s;
+}
+.sidebar-section-collapsible .section-title-row .right {
+  margin-left: 0.7em;
+  font-size: 1.2em;
+  transition: transform 0.3s;
+  color: inherit;
+  vertical-align: middle;
+  display: inline-block;
+}
+.sidebar-section-collapsible.collapsed .section-title-row .right {
+  transform: rotate(0deg);
+}
+.sidebar-section-collapsible.expanded .section-title-row .right {
+  transform: rotate(180deg);
+}
+.sidebar-section-collapsible .section-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+  padding: 0 1.2em;
+}
+.sidebar-section-collapsible.expanded .section-content {
+  max-height: 800px; /* suficiente para la mayoría de los contenidos */
+  opacity: 1;
+  padding: 1em 1.2em 1.2em 1.2em;
+  transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.3s, padding 0.2s;
+}
+.perfil-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.perfil-bg-gradient {
+  background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 60%, #ffe3ec 100%);
+}
+
+
+.perfil-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  transition: box-shadow 0.3s;
+  border: 3px solid #a5b4fc;
+  background: linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%);
+}
+
+.perfil-card-vibrant {
+  border: 3px solid #7c3aed;
+  background: linear-gradient(120deg, #f8fafc 60%, #f3e8ff 100%);
+  box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.13), 0 1.5px 8px 0 rgba(255, 65, 108, 0.08);
+}
+
+.perfil-card:hover {
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.22);
+}
+
+
+.perfil-avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #7c3aed;
+  box-shadow: 0 2px 16px 0 rgba(124, 58, 237, 0.18);
+  background: #f4f8fb;
+  position: relative;
+}
+
+.perfil-avatar-glow::after {
+  content: '';
+  position: absolute;
+  top: -8px; left: -8px; right: -8px; bottom: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #a5b4fc55 0%, transparent 70%);
+  z-index: 0;
+}
+
+.perfil-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.perfil-nombre {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #7c3aed 0%, #007bff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+
+.perfil-rol .badge {
+  font-size: 1rem;
+  padding: 0.5em 1.2em;
+  border-radius: 1em;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 6px 0 rgba(124, 58, 237, 0.10);
+}
+
+.badge-admin {
+  background: linear-gradient(90deg, #7c3aed 0%, #007bff 100%);
+  color: #fff;
+}
+.badge-operador {
+  background: linear-gradient(90deg, #00c6ff 0%, #7c3aed 100%);
+  color: #fff;
+}
+
+.perfil-info {
+  text-align: left;
+  margin-top: 1.5rem;
+  font-size: 1.08rem;
+  color: #495057;
+}
+
+.perfil-info div {
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+}
+
+.perfil-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.btn-gradient-profile {
+  background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.3em 1.1em;
+  font-size: 0.95rem;
+  min-width: 80px;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn-gradient-profile:hover {
+  background: linear-gradient(90deg, #0056b3 0%, #00aaff 100%);
+  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.18);
+}
+
+.btn-gradient-logout {
+  background: linear-gradient(90deg, #ff416c 0%, #ff4b2b 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.3em 1.1em;
+  font-size: 0.95rem;
+  min-width: 80px;
+  box-shadow: 0 2px 8px rgba(255, 65, 108, 0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn-gradient-logout:hover {
+  background: linear-gradient(90deg, #c82333 0%, #ff4b2b 100%);
+  box-shadow: 0 4px 16px rgba(255, 65, 108, 0.18);
+}
+
+// Unifica el fondo de todas las secciones principales
+.section-bg,
+.perfil-container,
+.perfil-bg-gradient {
+  background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 60%, #ffe3ec 100%);
+}
+
+// Unifica el estilo de todos los botones principales
+.btn,
+.btn-gradient-profile,
+.btn-gradient-logout {
+  border-radius: 999px;
+  font-weight: 600;
+  min-width: 100px;
+  padding: 0.4em 1.2em;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+// Espaciado y organización para secciones
+.section-title {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.section-content {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.07);
+}
+
+/* Sidebar y títulos de sección */
+.sidebar {
+  background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 60%, #ffe3ec 100%);
+  min-height: 100vh;
+  padding: 1.5rem 1rem;
+  box-shadow: 2px 0 12px rgba(31, 38, 135, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.08rem;
+  font-weight: 600;
+  padding: 0.6em 1em;
+  border-radius: 0.8em;
+  background: #f8fafc;
+  color: #7c3aed;
+  margin-bottom: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.section-title-row .right {
+  margin-left: 0.7em;
+  font-size: 1.1em;
+  transition: transform 0.2s;
+  color: inherit;
+  vertical-align: middle;
+}
+
+/* Cambia color de fondo y texto del sidebar según configuración */
+.sidebar.theme-dark {
+  background: linear-gradient(135deg, #232946 0%, #121629 100%);
+  color: #fff;
+}
+.sidebar.theme-dark .section-title-row {
+  background: #232946;
+  color: #a5b4fc;
+}
+
+/* Flecha animada para expandir/colapsar */
+.section-title-row.collapsed .right {
+  transform: rotate(0deg);
+}
+.section-title-row.expanded .right {
+  transform: rotate(180deg);
+}
+
+/* Sidebar: color, ancho y organización mejorada */
+.app-sidebar,
+.sidebar,
+.sidebar-wrapper,
+.bg-body-secondary {
+  background: #f4f6fb !important; /* Color más claro y moderno */
+  background-image: none !important;
+  color: #232946;
+  min-height: 100vh;
+  height: 100vh;
+  width: 340px; /* Sidebar más ancho */
+  min-width: 340px;
+  max-width: 380px;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: 4px 0 24px rgba(31, 38, 135, 0.08);
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/* Secciones del sidebar más separadas y visualmente claras */
+.sidebar-section {
+  margin-bottom: 2rem;
+  padding: 1rem 1.2rem;
+  background: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.06);
+}
+
+.sidebar-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* NUEVAS SECCIONES: Gestión de Usuarios y Reportes y Estadísticas */
+
+/* Sección: Gestión de Usuarios */
+.sesion-gestion-usuarios {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 1.2rem;
+  background: #fff;
+  border-radius: 1.3rem;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+}
+.sesion-gestion-usuarios .sidebar-section-title {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.sesion-gestion-usuarios .sidebar-users-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.sesion-gestion-usuarios .sidebar-users-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 0.5em 0.2em;
+  font-size: 1.08rem;
+  border-bottom: 1px solid #e0e7ff;
+  transition: background 0.2s;
+}
+.sesion-gestion-usuarios .sidebar-users-list li:last-child {
+  border-bottom: none;
+}
+.sesion-gestion-usuarios .user-role {
+  font-size: 1em;
+  padding: 0.25em 1em;
+  border-radius: 1.2em;
+  margin-left: auto;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.10);
+  background: #e0e7ff;
+  color: #7c3aed;
+  border: 2px solid #a5b4fc;
+}
+.sesion-gestion-usuarios .user-role.admin {
+  background: linear-gradient(90deg, #7c3aed 0%, #007bff 100%);
+  color: #fff;
+  border: 2px solid #7c3aed;
+}
+.sesion-gestion-usuarios .user-role.operador {
+  background: linear-gradient(90deg, #00c6ff 0%, #7c3aed 100%);
+  color: #fff;
+  border: 2px solid #00c6ff;
+}
+/* Puedes agregar más estilos para otros roles si existen */
+.sesion-gestion-usuarios .user-role.supervisor {
+  background: linear-gradient(90deg, #ffb347 0%, #ffcc33 100%);
+  color: #fff;
+  border: 2px solid #ffb347;
+}
+.sesion-gestion-usuarios .user-role.invitado {
+  background: linear-gradient(90deg, #bdbdbd 0%, #e0e0e0 100%);
+  color: #232946;
+  border: 2px solid #bdbdbd;
+}
+
+/* Sección: Reportes y Estadísticas */
+.sesion-reportes-estadisticas {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 1.2rem;
+  background: #fff;
+  border-radius: 1.3rem;
+  box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+}
+.sesion-reportes-estadisticas .sidebar-chart-card {
+  margin-bottom: 1.5rem;
+}
+.sesion-reportes-estadisticas .sidebar-chart-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 1rem;
+}
+
+/* --- FIN NUEVAS SECCIONES --- */
+
+/* Sidebar-users-list: Quitar filtro que ocultaba otros roles */
+/* Elimina o comenta la siguiente regla para mostrar todos los roles */
+// .sidebar-users-list li:not(:has(.user-role.admin, .user-role.operador)) {
+//   display: none !important;
+// }
+
+/* Gráficos en reportes: espacio y fondo */
+/* Reportes y estadísticas: simulaciones con gráficos vistosos */
+.sidebar-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+.sidebar-chart-card {
+  background: linear-gradient(120deg, #f3e8ff 60%, #a5b4fc 100%);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.13), 0 1.5px 8px 0 rgba(255, 65, 108, 0.08);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.sidebar-chart-card:hover {
+  box-shadow: 0 12px 40px 0 rgba(124, 58, 237, 0.22);
+}
+.sidebar-chart-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px #e0e7ff;
+}
+.sidebar-chart-simulation {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.7rem;
+}
+.sidebar-chart-bar {
+  width: 22px;
+  border-radius: 0.7rem 0.7rem 0 0;
+  background: linear-gradient(180deg, #7c3aed 0%, #00c6ff 100%);
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.13);
+  transition: height 0.4s, background 0.3s;
+}
+.sidebar-chart-bar.admin {
+  background: linear-gradient(180deg, #7c3aed 0%, #007bff 100%);
+}
+.sidebar-chart-bar.operador {
+  background: linear-gradient(180deg, #00c6ff 0%, #7c3aed 100%);
+}
+.sidebar-chart-label {
+  font-size: 0.95rem;
+  color: #232946;
+  margin-top: 0.5em;
+  text-align: center;
+  font-weight: 600;
+}
+
+

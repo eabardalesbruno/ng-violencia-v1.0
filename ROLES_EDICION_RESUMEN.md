@@ -46,7 +46,7 @@ Solo se pueden seleccionar estos roles específicos:
    ```
 
 ### 6. **Endpoint de Actualización**
-- **URL**: `${environment.api.base}/rolespersonacaso/{id}`
+- **URL**: `http://localhost:8080/rolespersonacaso/{id}`
 - **Método**: `PUT`
 - **Formato de datos**:
   ```json

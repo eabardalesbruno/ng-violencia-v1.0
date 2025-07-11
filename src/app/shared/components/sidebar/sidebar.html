@@ -2,16 +2,16 @@
 <div class="sidebar-wrapper">
     <nav class="mt-2">
         <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-            <li class="nav-header">MENUS</li>
+            <li class="nav-header">MENÚS PRINCIPALES</li>
 
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <a class="nav-link" [routerLink]="['/home']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                     <i class="nav-icon bi bi-house-door-fill"></i>
                     <p>Inicio</p>
                 </a>
             </li>
 
-            <!-- Personas según Rol -->
+            <!-- Personas según Rol - Visible para usuarios autenticados -->
             <li class="nav-item has-treeview" [ngClass]="{ 'menu-open': openRolesPerson }">
                 <a class="nav-link" (click)="openRolesPerson = !openRolesPerson">
                     <i class="nav-icon bi bi-people-fill"></i>
@@ -24,13 +24,13 @@
                 </a>
                 <ul class="nav nav-treeview" [ngClass]="{ 'show': openRolesPerson }">
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['rolesperson']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link" [routerLink]="['/rolesperson']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <i class="nav-icon bi bi-person-lines-fill"></i>
                             <p>Ver Personas según Rol</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['rolesperson/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link" [routerLink]="['/rolesperson/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <i class="nav-icon bi bi-person-plus-fill"></i>
                             <p>Registrar Persona Rol</p>
                         </a>
@@ -38,8 +38,8 @@
                 </ul>
             </li>
 
-            <!-- Entidades y Distritos -->
-            <li class="nav-item has-treeview"*appHasRole="'ENTIDADES_LISTAR'"  [ngClass]="{ 'menu-open': openEntidadDistrito }">
+            <!-- Entidades y Distritos - Visible para usuarios autenticados -->
+            <li class="nav-item has-treeview" [ngClass]="{ 'menu-open': openEntidadDistrito }">
                 <a class="nav-link" (click)="openEntidadDistrito = !openEntidadDistrito">
                     <i class="nav-icon bi bi-building"></i>
                     <p>
@@ -51,13 +51,13 @@
                 </a>
                 <ul class="nav nav-treeview" [ngClass]="{ 'show': openEntidadDistrito }">
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['entidaddistrito']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link" [routerLink]="['/entidaddistrito']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <i class="nav-icon bi bi-bank2"></i>
                             <p>Ver Entidades y Distritos</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['entidaddistrito/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link" [routerLink]="['/entidaddistrito/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <i class="nav-icon bi bi-building-add"></i>
                             <p>Registrar Entidad/Distrito</p>
                         </a>
@@ -65,12 +65,12 @@
                 </ul>
             </li>
 
-            <!-- Personas -->
-            <li class="nav-item has-treeview" *appHasRole="'VICTIMAS_LISTAR'" [ngClass]="{ 'menu-open': openPersonas }">
+            <!-- Personas - Visible para usuarios autenticados -->
+            <li class="nav-item has-treeview" [ngClass]="{ 'menu-open': openPersonas }">
                 <a class="nav-link" (click)="openPersonas = !openPersonas">
                     <i class="nav-icon bi bi-person-badge-fill"></i>
                     <p>
-                        Personas
+                        Gestión de Personas
                         <i class="right bi"
                            [class.bi-chevron-up]="openPersonas"
                            [class.bi-chevron-down]="!openPersonas"></i>
@@ -78,27 +78,75 @@
                 </a>
                 <ul class="nav nav-treeview" [ngClass]="{ 'show': openPersonas }">
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['personas']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link" [routerLink]="['/personas']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                            <i class="nav-icon bi bi-people"></i>
-                            <p>Ver Personas</p>
+                            <p>Listar Personas</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['personas/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link" [routerLink]="['/personas/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
                             <i class="nav-icon bi bi-person-plus"></i>
-                            <p>Registro de Personas</p>
+                            <p>Registrar Persona</p>
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <!-- Casos -->
-            <li class="nav-item" *appHasRole="'CASOS_LISTAR'">
-                <a class="nav-link" [routerLink]="['casos']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                    <i class="nav-icon bi bi-box"></i>
-                    <p>Casos</p>
+            <!-- Casos - Visible para usuarios autenticados -->
+            <li class="nav-item has-treeview" [ngClass]="{ 'menu-open': openCasos }">
+                <a class="nav-link" (click)="openCasos = !openCasos">
+                    <i class="nav-icon bi bi-folder2-open"></i>
+                    <p>
+                        Gestión de Casos
+                        <i class="right bi"
+                           [class.bi-chevron-up]="openCasos"
+                           [class.bi-chevron-down]="!openCasos"></i>
+                    </p>
                 </a>
+                <ul class="nav nav-treeview" [ngClass]="{ 'show': openCasos }">
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/casos']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="nav-icon bi bi-list-ul"></i>
+                            <p>Listar Casos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/casos/register']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                            <i class="nav-icon bi bi-plus-circle"></i>
+                            <p>Registrar Caso</p>
+                        </a>
+                    </li>
+                </ul>
             </li>
+
+            <!-- SECCIÓN ADICIONAL: Solo visible para ADMIN -->
+            <ng-container *appHasRole="'ADMIN'">
+                <li class="nav-header">ADMINISTRACIÓN</li>
+                
+                <!-- Configuración del Sistema -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/configuracion']" routerLinkActive="active">
+                        <i class="nav-icon bi bi-gear-fill"></i>
+                        <p>Configuración Sistema</p>
+                    </a>
+                </li>
+
+                <!-- Reportes -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="return false;">
+                        <i class="nav-icon bi bi-bar-chart-fill"></i>
+                        <p>Reportes y Estadísticas</p>
+                    </a>
+                </li>
+
+                <!-- Gestión de Usuarios -->
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="return false;">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>Gestión de Usuarios</p>
+                    </a>
+                </li>
+            </ng-container>
         </ul>
     </nav>
 </div>

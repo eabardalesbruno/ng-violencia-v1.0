@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/enviroment';
 
 @Injectable({ providedIn: 'root' })
 export class PersonaRolesVistaService {
-  private apiUrl = '${environment.api.base}/api/personas-roles-vista';
+  private apiUrl = `${environment.api.base}/api/personas-roles-vista`;
 
   constructor(private http: HttpClient) {}
 

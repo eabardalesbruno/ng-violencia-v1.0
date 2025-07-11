@@ -1,0 +1,192 @@
+<div class="container-fluid">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">
+            <i class="bi bi-gear-fill me-2"></i>
+            Configuración del Sistema
+          </h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-end">
+            <li class="breadcrumb-item"><a href="#" [routerLink]="['/home']">Inicio</a></li>
+            <li class="breadcrumb-item active">Configuración</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-outline card-primary">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="bi bi-palette me-2"></i>
+                Personalización de Colores del Sidebar
+              </h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <h5 class="mb-3">
+                    <i class="bi bi-brush me-2"></i>
+                    Seleccionar Tema del Sidebar
+                  </h5>
+                  
+                  <div class="form-group mb-4">
+                    <label for="sidebarTheme" class="form-label fw-bold">Tema Actual:</label>
+                    <div class="d-flex align-items-center">
+                      <div class="color-preview me-3" [style.background-color]="getCurrentThemeColor()"></div>
+                      <span class="badge badge-secondary">{{ getCurrentThemeName() }}</span>
+                    </div>
+                  </div>
+
+                  <div class="row g-3">
+                    <!-- Tema Azul (Default) -->
+                    <div class="col-6 col-md-4">
+                      <div class="theme-option" 
+                           [class.active]="currentTheme === 'blue'"
+                           (click)="changeTheme('blue')">
+                        <div class="theme-preview blue-theme">
+                          <div class="sidebar-demo"></div>
+                        </div>
+                        <h6 class="text-center mt-2">Azul</h6>
+                      </div>
+                    </div>
+
+                    <!-- Tema Verde -->
+                    <div class="col-6 col-md-4">
+                      <div class="theme-option"
+                           [class.active]="currentTheme === 'green'"
+                           (click)="changeTheme('green')">
+                        <div class="theme-preview green-theme">
+                          <div class="sidebar-demo"></div>
+                        </div>
+                        <h6 class="text-center mt-2">Verde</h6>
+                      </div>
+                    </div>
+
+                    <!-- Tema Plomo/Gris -->
+                    <div class="col-6 col-md-4">
+                      <div class="theme-option"
+                           [class.active]="currentTheme === 'gray'"
+                           (click)="changeTheme('gray')">
+                        <div class="theme-preview gray-theme">
+                          <div class="sidebar-demo"></div>
+                        </div>
+                        <h6 class="text-center mt-2">Plomo</h6>
+                      </div>
+                    </div>
+
+                    <!-- Tema Rojo -->
+                    <div class="col-6 col-md-4">
+                      <div class="theme-option"
+                           [class.active]="currentTheme === 'red'"
+                           (click)="changeTheme('red')">
+                        <div class="theme-preview red-theme">
+                          <div class="sidebar-demo"></div>
+                        </div>
+                        <h6 class="text-center mt-2">Rojo</h6>
+                      </div>
+                    </div>
+
+                    <!-- Tema Púrpura -->
+                    <div class="col-6 col-md-4">
+                      <div class="theme-option"
+                           [class.active]="currentTheme === 'purple'"
+                           (click)="changeTheme('purple')">
+                        <div class="theme-preview purple-theme">
+                          <div class="sidebar-demo"></div>
+                        </div>
+                        <h6 class="text-center mt-2">Púrpura</h6>
+                      </div>
+                    </div>
+
+                    <!-- Tema Oscuro -->
+                    <div class="col-6 col-md-4">
+                      <div class="theme-option"
+                           [class.active]="currentTheme === 'dark'"
+                           (click)="changeTheme('dark')">
+                        <div class="theme-preview dark-theme">
+                          <div class="sidebar-demo"></div>
+                        </div>
+                        <h6 class="text-center mt-2">Oscuro</h6>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4">
+                    <button type="button" 
+                            class="btn btn-success me-2"
+                            (click)="saveConfiguration()"
+                            [disabled]="!hasChanges">
+                      <i class="bi bi-check-circle me-1"></i>
+                      Guardar Configuración
+                    </button>
+                    
+                    <button type="button" 
+                            class="btn btn-secondary"
+                            (click)="resetToDefault()">
+                      <i class="bi bi-arrow-clockwise me-1"></i>
+                      Restaurar Predeterminado
+                    </button>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <h5 class="mb-3">
+                    <i class="bi bi-eye me-2"></i>
+                    Vista Previa
+                  </h5>
+                  
+                  <div class="preview-container">
+                    <div class="sidebar-preview" [attr.data-theme]="currentTheme">
+                      <div class="sidebar-header">
+                        <h6>DELITOS INFORMES</h6>
+                      </div>
+                      <div class="sidebar-menu">
+                        <div class="menu-header">MENÚS PRINCIPALES</div>
+                        <div class="menu-item active">
+                          <i class="bi bi-house-door-fill"></i>
+                          <span>Inicio</span>
+                        </div>
+                        <div class="menu-item">
+                          <i class="bi bi-people-fill"></i>
+                          <span>Personas según Rol</span>
+                        </div>
+                        <div class="menu-item">
+                          <i class="bi bi-building"></i>
+                          <span>Entidades y Distritos</span>
+                        </div>
+                        <div class="menu-item">
+                          <i class="bi bi-folder2-open"></i>
+                          <span>Gestión de Casos</span>
+                        </div>
+                        <div class="menu-header">ADMINISTRACIÓN</div>
+                        <div class="menu-item">
+                          <i class="bi bi-gear-fill"></i>
+                          <span>Configuración Sistema</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  @if (hasChanges) {
+                    <div class="alert alert-info mt-3">
+                      <i class="bi bi-info-circle me-2"></i>
+                      <strong>Cambios pendientes:</strong> Los cambios se aplicarán a todos los usuarios cuando guardes la configuración.
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

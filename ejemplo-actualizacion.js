@@ -8,7 +8,7 @@ const exampleUpdateData = {
 };
 
 // Endpoint que se llamará
-const endpoint = "${environment.api.base}/rolespersonacaso/752";
+const endpoint = "http://localhost:8080/rolespersonacaso/752";
 
 // Método HTTP: PUT
 

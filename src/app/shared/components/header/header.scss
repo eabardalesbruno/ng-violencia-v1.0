@@ -1,0 +1,34 @@
+.btn-gradient-profile {
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  color: #fff !important;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+  transition: all 0.2s;
+  padding: 0.5rem 1.2rem;
+  margin-right: 0.5rem;
+  &:hover {
+    background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(0,123,255,0.25);
+  }
+}
+
+.btn-gradient-logout {
+  background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
+  color: #fff !important;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(221,36,118,0.15);
+  transition: all 0.2s;
+  padding: 0.5rem 1.2rem;
+  &:hover {
+    background: linear-gradient(90deg, #dd2476 0%, #ff512f 100%);
+    color: #fff;
+    transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(221,36,118,0.25);
+  }
+}

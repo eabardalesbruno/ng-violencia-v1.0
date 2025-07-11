@@ -1,0 +1,18 @@
+<div class="sesion-reportes-estadisticas" style="background: inherit;">
+  <div class="sidebar-section-title">
+    Reportes y Estadísticas
+  </div>
+  <div class="sidebar-charts">
+    <div class="sidebar-chart-card" *ngFor="let grafico of graficos">
+      <div class="sidebar-chart-title">{{ grafico.titulo }}</div>
+      <div class="sidebar-chart-simulation">
+        <div
+          class="sidebar-chart-bar"
+          [class]="'sidebar-chart-bar ' + grafico.rol"
+          [style.height]="grafico.valor + 'px'"
+        ></div>
+      </div>
+      <div class="sidebar-chart-label">{{ grafico.rol | titlecase }}</div>
+    </div>
+  </div>
+</div>
