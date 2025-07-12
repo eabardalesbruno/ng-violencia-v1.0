@@ -21,8 +21,12 @@ export class Header implements OnInit {
 
   toggleSidebar() {
     const sidebar = document.querySelector('.sidebar-wrapper') as HTMLElement;
+    const appSidebar = document.querySelector('.app-sidebar') as HTMLElement;
     if (sidebar) {
       sidebar.classList.toggle('collapsed');
+    }
+    if (appSidebar) {
+      appSidebar.classList.toggle('collapsed');
     }
     this.sidebarOpen = !this.sidebarOpen;
   }

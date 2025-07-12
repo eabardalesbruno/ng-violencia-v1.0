@@ -66,15 +66,17 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem(ACCESS_TOKEN_KEY);
-    console.log('🔐 isAuthenticated check - token exists:', !!token);
-    
     if (!token) {
-      console.log('🔐 No token, not authenticated');
       return false;
     }
-    
-    console.log('🔐 Token found, user is authenticated');
-    return true;
+    // Verifica que el token NO esté expirado
+    try {
+      const exp = JSON.parse(atob(token.split('.')[1])).exp;
+      // El token es válido si su fecha de expiración es mayor al momento actual
+      return exp * 1000 > Date.now();
+    } catch {
+      return false;
+    }
   }
 
   storeToken(token: string): void {

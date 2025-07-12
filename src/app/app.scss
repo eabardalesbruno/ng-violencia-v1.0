@@ -78,3 +78,18 @@
     }
   }
 }
+
+.app-sidebar {
+  min-width: 280px !important;
+  max-width: 280px !important;
+
+  &.collapsed {
+    width: 0px !important;
+    min-width: 0px !important;
+    max-width: 0px !important;
+    overflow-x: hidden;
+    transition: width 0.3s, min-width 0.3s, max-width 0.3s;
+    padding: 0px !important;
+  }
+}
+

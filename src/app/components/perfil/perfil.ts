@@ -27,6 +27,8 @@ export class PerfilComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
+    // NO borres ni modifiques el token aquí.
+    // Solo lee el token, no lo elimines ni lo sobrescribas.
     const jwt = this.authService.token;
     if (jwt) {
       try {
@@ -43,6 +45,7 @@ export class PerfilComponent implements OnInit {
         this.user.rol = this.authService.isAdmin() ? 'ADMIN' : 'OPERADOR';
       }
     }
+    // NO agregues lógica que borre el token aquí.
   }
 
   toggleSidebar() {
@@ -58,4 +61,3 @@ export class PerfilComponent implements OnInit {
     window.location.href = '/sign-in';
   }
 }
-  

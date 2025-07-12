@@ -124,29 +124,31 @@
                 <!-- Acciones -->
                 <ngx-datatable-column name="Acciones">
                   <ng-template let-row="row" ngx-datatable-cell-template>
-                    <button
-                      class="btn btn-info btn-sm mx-1"
-                      (click)="verDetalleCaso(row.id)"
-                      title="Ver"
-                    >
-                      <i class="bi bi-eye"></i>
-                    </button>
-                    <button
-                      class="btn btn-purple btn-sm mx-1"
-                      (click)="openUpdateEstadoModal(row)"
-                      title="Actualizar estado"
-                      style="background-color: #6f42c1; border-color: #6f42c1; color: #fff;"
-                    >
-                      <i class="bi bi-gear-fill"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm mx-1"
-                      (click)="openDeleteModal(row)"
-                      title="Eliminar"
-                    >
-                      <i class="bi bi-trash3-fill"></i>
-                    </button>
+                    <div style="display: flex; gap: 0.25rem; align-items: center;">
+                      <button
+                        class="btn btn-info btn-sm"
+                        (click)="verDetalleCaso(row.id)"
+                        title="Ver"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                      <button
+                        class="btn btn-purple btn-sm"
+                        (click)="openUpdateEstadoModal(row)"
+                        title="Actualizar estado"
+                        style="background-color: rgb(31, 28, 68); border-color: #51c142; color: #fff;"
+                      >
+                        <i class="bi bi-gear-fill"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm"
+                        (click)="openDeleteModal(row)"
+                        title="Eliminar"
+                      >
+                        <i class="bi bi-trash3-fill"></i>
+                      </button>
+                    </div>
                   </ng-template>
                 </ngx-datatable-column>
               </ngx-datatable>

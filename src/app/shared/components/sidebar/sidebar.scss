@@ -2,7 +2,9 @@
 .sidebar-wrapper {
   background: linear-gradient(135deg, var(--sidebar-primary-color, #007bff), var(--sidebar-secondary-color, #0056b3));
   color: var(--sidebar-text-color, #fff);
-  min-height: 100vh;
+  min-height: 100%;
+  position: fixed;
+  width: 280px;
   transition: background 0.3s;
 
   .nav-header {
@@ -47,11 +49,12 @@
   }
 
   &.collapsed {
-    width: 60px !important;
-    min-width: 60px !important;
-    max-width: 60px !important;
+    width: 0px !important;
+    min-width: 0px !important;
+    max-width: 0px !important;
     overflow-x: hidden;
     transition: width 0.3s, min-width 0.3s, max-width 0.3s;
+    padding: 0px !important;
   }
 
   .nav-link p {
