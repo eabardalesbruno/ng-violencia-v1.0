@@ -31,7 +31,7 @@ export class App {
     this.applyGlobalSidebarTheme();
 
     // PASO 1: Limpiar localStorage para forzar login
-    localStorage.removeItem('access_token');
+    //localStorage.removeItem('access_token');
     console.log('localStorage limpiado, debe ir al login');
   }
 
